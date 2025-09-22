@@ -6,7 +6,7 @@ const resources = {
     translation: {
       "nav": {
         "solutions": "Soluciones",
-        "whyVirtus": "Nosotros", // <-- ¡La palabra que faltaba!
+        "whyVirtus": "Nosotros",
         "caseStudies": "Casos de Éxito",
         "methodology": "Metodología",
         "blog": "Blog",
@@ -150,20 +150,19 @@ const resources = {
         "el-futuro-es-ahora-agentes-rpa-con-ia": {
           "title": "El Futuro es Ahora: Agentes RPA con Inteligencia Artificial",
           "summary": "La automatización ha evolucionado. Ya no se trata solo de repetir clics, sino de entender documentos, interpretar correos y tomar decisiones. Descubre los Agentes RPA inteligentes.",
-          "content": "<h1>Más allá de los clics: RPA que 'piensa'</h1><p>Un bot de RPA tradicional es un ejecutor de tareas magistral. Le das una regla clara ('copia el dato de la casilla A y pégalo en la casilla B') y lo hará a la perfección un millón de veces. Pero, ¿qué pasa si la tarea requiere un poco de... juicio?</p><p>Ahí es donde la Inteligencia Artificial (IA) entra en juego, transformando a nuestros 'trabajadores digitales' en verdaderos 'Agentes Digitales Inteligentes'.</p><h2>¿Qué puede hacer un Agente RPA con IA que un bot tradicional no puede?</h2><p>Un bot tradicional necesita datos estructurados (como una hoja de Excel). Un agente con IA puede trabajar con datos no estructurados, el 80% de la información de una empresa.</p><h3>Soluciones puntuales que la IA desbloquea:</h3><ul><li><strong>Entender Documentos:</strong> Puede leer una factura en PDF o una foto de un recibo, sin importar si el formato cambia. Extrae los datos clave (RUC, total, fecha) como lo haría un humano, pero en segundos.</li><li><strong>Clasificar Correos Electrónicos:</strong> Puede leer un correo entrante, entender si es una queja, una solicitud de cotización o un pedido de soporte, y redirigirlo automáticamente al departamento correcto sin que nadie tenga que leerlo primero.</li><li><strong>Análisis de Sentimiento:</strong> Puede analizar los comentarios de tus clientes en redes sociales o encuestas y decirte si el sentimiento general es positivo, negativo o neutro, dándote un pulso de tu marca en tiempo real.</li><li><strong>Toma de Decisiones Básica:</strong> Puede aprobar una solicitud de descuento si cumple con ciertas variables (cliente antiguo, monto bajo, etc.) o escalarla a un supervisor si es un caso complejo.</li></ul><p>En Virtus Tech Consulting, no solo te ofrecemos la automatización de hoy, te preparamos para la eficiencia del mañana. La IA ya no es ciencia ficción; es la próxima ventaja competitiva para las empresas que quieren liderar, no solo competir.</p>"
+          "content": "<h1>Más allá de los clics: RPA que 'piensa'</h1><p>Un bot de RPA tradicional es un ejecutor de tareas magistral. Le das una regla clara ('copia el dato de la casilla A y pégalo en la casilla B') y lo hará a la perfección un millón de veces. Pero, ¿qué pasa si la tarea requiere un poco de... juicio?</p><p>Ahí es donde la Inteligencia Artificial (IA) entra en juego, transformando a nuestros 'trabajadores digitales' en verdaderos 'Agentes Digitales Inteligentes'.</p><h2>¿Qué puede hacer un Agente RPA con IA que un bot tradicional no puede?</h2><p>Un bot tradicional necesita datos estructurados (como una hoja de Excel). Un agente con IA puede trabajar con datos no estructurados, el 80% de la información de una empresa.</p><h3>Soluciones puntuales que la IA desbloquea:</h3><ul><li><strong>Entender Documentos:</strong> Puede leer una factura en PDF o una foto de un recibo, sin importar si el formato cambia. Extrae los datos clave (RUC, total, fecha) como lo haría un humano, pero en segundos.</li><li><strong>Clasificar Correos Electrónicos:</strong> Puede leer un correo entrante, entender si es una queja, una solicitud de cotización o un pedido de soporte, y redirigirlo automáticamente al departamento correcto sin que nadie tenga que leerlo primero.</li><li><strong>Análisis de Sentimiento:</strong> Puede analizar los comentarios de tus clientes en redes sociales o en encuestas y decirte si el sentimiento general es positivo, negativo o neutro, dándote un pulso de tu marca en tiempo real.</li><li><strong>Toma de Decisiones Básica:</strong> Puede aprobar una solicitud de descuento si cumple con ciertas variables (cliente antiguo, monto bajo, etc.) o escalarla a un supervisor si es un caso complejo.</li></ul><p>En Virtus Tech Consulting, no solo te ofrecemos la automatización de hoy, te preparamos para la eficiencia del mañana. La IA ya no es ciencia ficción; es la próxima ventaja competitiva para las empresas que quieren liderar, no solo competir.</p>"
         }
       },
       "contact": {
         "title": "Hablemos de tu Potencial",
         "subtitle": "Agenda un diagnóstico gratuito de 30 minutos y descubre las oportunidades de automatización ocultas en tu empresa. Sin compromiso, con resultados claros.",
         "form": {
-          "title": "Agenda tu Diagnóstico",
           "name": "Nombre Completo",
           "email": "Correo Electrónico",
-          "company": "Nombre de la Empresa",
+          "phone": "Número de Teléfono",
+          "selectService": "Selecciona un servicio...",
+          "companySize": "Tamaño de tu empresa...",
           "message": "Cuéntanos sobre tu principal desafío",
-          "companySize": "Tamaño de la empresa",
-          "selectService": "Selecciona un servicio",
           "submit": "Agendar mi Diagnóstico"
         },
         "or": "O contáctanos directamente"
@@ -178,7 +177,7 @@ const resources = {
     translation: {
       "nav": {
         "solutions": "Solutions",
-        "whyVirtus": "About Us", // <-- And here for English!
+        "whyVirtus": "About Us", 
         "caseStudies": "Case Studies",
         "methodology": "Methodology",
         "blog": "Blog",
@@ -325,13 +324,15 @@ const resources = {
           "content": "<h1>Beyond Clicks: RPA that 'Thinks'</h1><p>A traditional RPA bot is a masterful task executor. You give it a clear rule ('copy the data from cell A and paste it into cell B'), and it will do it perfectly a million times. But what if the task requires a bit of... judgment?</p><p>That's where Artificial Intelligence (AI) comes into play, transforming our 'digital workers' into true 'Intelligent Digital Agents'.</p><h2>What can an AI-powered RPA Agent do that a traditional bot can't?</h2><p>A traditional bot needs structured data (like an Excel sheet). An AI agent can work with unstructured data, which makes up 80% of a company's information.</p><h3>Specific solutions that AI unlocks:</h3><ul><li><strong>Understand Documents:</strong> It can read a PDF invoice or a photo of a receipt, regardless of whether the format changes. It extracts key data (Tax ID, total, date) just as a human would, but in seconds.</li><li><strong>Classify Emails:</strong> It can read an incoming email, understand if it's a complaint, a quote request, or a support ticket, and automatically route it to the correct department without anyone having to read it first.</li><li><strong>Sentiment Analysis:</strong> It can analyze your customers' comments on social media or in surveys and tell you if the overall sentiment is positive, negative, or neutral, giving you a real-time pulse of your brand.</li><li><strong>Basic Decision Making:</strong> It can approve a discount request if it meets certain variables (long-time customer, low amount, etc.) or escalate it to a supervisor if it's a complex case.</li></ul><p>At Virtus Tech Consulting, we don't just offer you today's automation; we prepare you for tomorrow's efficiency. AI is no longer science fiction; it's the next competitive advantage for companies that want to lead, not just compete.</p>"
         }
       },
-       "contact": {
+      "contact": {
         "title": "Let's Talk About Your Potential",
         "subtitle": "Schedule a free 30-minute diagnosis and discover the hidden automation opportunities in your company. No commitment, with clear results.",
         "form": {
           "name": "Full Name",
           "email": "Email Address",
-          "company": "Company Name",
+          "phone": "Phone Number",
+          "selectService": "Select a service...",
+          "companySize": "Your company size...",
           "message": "Tell us about your main challenge",
           "submit": "Schedule My Diagnosis"
         },

@@ -5,13 +5,14 @@ import { FaEnvelope, FaMapMarkerAlt, FaPhone, FaClock } from 'react-icons/fa';
 
 const Contact = () => {
   const { t } = useTranslation();
+  // Añadimos el nuevo campo 'phone' a nuestro estado
   const [formState, setFormState] = useState({
     name: '',
     email: '',
-    company: '',
-    message: '',
+    phone: '', // <-- ¡Aquí está nuestro nuevo campo!
     serviceType: '',
-    companySize: ''
+    companySize: '',
+    message: ''
   });
   const [submissionStatus, setSubmissionStatus] = useState(null);
 
@@ -38,7 +39,8 @@ const Contact = () => {
     })
       .then(() => {
         setSubmissionStatus('success');
-        setFormState({ name: '', email: '', company: '', message: '', serviceType: '', companySize: '' });
+        // Limpiamos también el campo de teléfono después de enviar
+        setFormState({ name: '', email: '', phone: '', serviceType: '', companySize: '', message: '' });
       })
       .catch(error => {
         setSubmissionStatus('error');
@@ -70,6 +72,11 @@ const Contact = () => {
               <div className="space-y-4">
                 <input type="text" name="name" placeholder={t('contact.form.name')} value={formState.name} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" required />
                 <input type="email" name="email" placeholder={t('contact.form.email')} value={formState.email} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" required />
+                
+                {/* --- INICIO DEL CAMPO AÑADIDO --- */}
+                <input type="tel" name="phone" placeholder={t('contact.form.phone')} value={formState.phone} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" />
+                {/* --- FIN DEL CAMPO AÑADIDO --- */}
+                
                 <select name="serviceType" value={formState.serviceType} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" required>
                   <option value="">{t('contact.form.selectService', 'Selecciona un servicio...')}</option>
                   <option value="rpa">RPA - Automatización Robótica</option>
@@ -128,3 +135,4 @@ const Contact = () => {
 }
 
 export default Contact;
+
