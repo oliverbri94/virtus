@@ -5,11 +5,10 @@ import { FaEnvelope, FaMapMarkerAlt, FaPhone, FaClock } from 'react-icons/fa';
 
 const Contact = () => {
   const { t } = useTranslation();
-  // Añadimos el nuevo campo 'phone' a nuestro estado
   const [formState, setFormState] = useState({
     name: '',
     email: '',
-    phone: '', // <-- ¡Aquí está nuestro nuevo campo!
+    phone: '',
     serviceType: '',
     companySize: '',
     message: ''
@@ -39,7 +38,6 @@ const Contact = () => {
     })
       .then(() => {
         setSubmissionStatus('success');
-        // Limpiamos también el campo de teléfono después de enviar
         setFormState({ name: '', email: '', phone: '', serviceType: '', companySize: '', message: '' });
       })
       .catch(error => {
@@ -52,6 +50,25 @@ const Contact = () => {
     <section id="contact" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <SectionTitle title={t('contact.title')} subtitle={t('contact.subtitle')} />
+
+        {/* --- INICIO DE LA MEJORA CON CAL.COM --- */}
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <h3 className="text-2xl font-bold text-virtus-dark mb-4">{t('contact.cal.title')}</h3>
+          <a
+            // ¡IMPORTANTE! Reemplaza este enlace con tu propio enlace de Cal.com
+            href="https://cal.com/oliver-briceno-nzreij/30min" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-virtus-blue hover:bg-virtus-blue-light text-white font-bold py-4 px-10 rounded-full text-xl transition-transform duration-300 transform hover:scale-105"
+          >
+            {t('contact.cal.cta')}
+          </a>
+        </div>
+        {/* --- FIN DE LA MEJORA CON CAL.COM --- */}
+
+        <div className="text-center mb-12">
+            <p className="text-gray-600 font-bold">{t('contact.or')}</p>
+        </div>
 
         <div className="flex flex-wrap-reverse lg:flex-wrap items-stretch max-w-6xl mx-auto">
           {/* Columna del Formulario */}
@@ -72,11 +89,7 @@ const Contact = () => {
               <div className="space-y-4">
                 <input type="text" name="name" placeholder={t('contact.form.name')} value={formState.name} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" required />
                 <input type="email" name="email" placeholder={t('contact.form.email')} value={formState.email} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" required />
-                
-                {/* --- INICIO DEL CAMPO AÑADIDO --- */}
                 <input type="tel" name="phone" placeholder={t('contact.form.phone')} value={formState.phone} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" />
-                {/* --- FIN DEL CAMPO AÑADIDO --- */}
-                
                 <select name="serviceType" value={formState.serviceType} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" required>
                   <option value="">{t('contact.form.selectService', 'Selecciona un servicio...')}</option>
                   <option value="rpa">RPA - Automatización Robótica</option>
@@ -93,7 +106,7 @@ const Contact = () => {
                 <textarea name="message" placeholder={t('contact.form.message')} rows="4" value={formState.message} onChange={handleChange} className="w-full p-3 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-virtus-blue" required></textarea>
               </div>
               
-              <button type="submit" className="w-full mt-6 bg-virtus-blue text-white font-bold py-3 px-6 rounded-full hover:bg-virtus-blue-light transition duration-300">{t('contact.form.submit')}</button>
+              <button type="submit" className="w-full mt-6 bg-virtus-dark text-white font-bold py-3 px-6 rounded-full hover:bg-gray-700 transition duration-300">{t('contact.form.submit')}</button>
             </form>
           </div>
 
@@ -122,7 +135,7 @@ const Contact = () => {
             </div>
           </div>
         </div>
-
+        
         {submissionStatus === 'success' && (
             <p className="text-center mt-6 text-green-600 font-bold">¡Gracias por tu mensaje! Te contactaremos pronto.</p>
         )}
