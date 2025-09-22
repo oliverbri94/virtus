@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Clients from '../components/Clients';
