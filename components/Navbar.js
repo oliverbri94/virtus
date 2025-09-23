@@ -89,14 +89,23 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
-            <Link href="/" legacyBehavior>
-              <a className="cursor-pointer" onClick={() => setIsOpen(false)}>
-                {/* --- ¡AQUÍ ESTÁ LA MAGIA! Le damos al logo su propio fondo blanco --- */}
-                <div className="bg-white p-2 rounded-md shadow-sm">
-                  <img src="/logo.png" alt="Virtus Tech Consulting Logo" className="h-10 w-auto" />
+            <Link href="/" passHref legacyBehavior>
+              <a
+                onClick={() => setIsOpen(false)}
+                aria-label="Ir a la página principal"
+                className="group inline-block"
+              >
+                <div className="bg-white p-2 rounded-xl shadow-md transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:shadow-lg">
+                  <img
+                    src="/logo.png"
+                    alt="Logo de Virtus Tech Consulting"
+                    className="h-8 sm:h-10 md:h-12 w-auto transition-transform duration-300 ease-in-out"
+                    loading="lazy"
+                  />
                 </div>
               </a>
             </Link>
+
           </div>
 
           {/* Menú de Escritorio */}
