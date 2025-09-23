@@ -40,7 +40,6 @@ const Navbar = () => {
       : "hover:text-virtus-blue-light cursor-pointer transition-colors";
 
     if (router.pathname === '/') {
-      // Si estamos en la página principal, usamos ScrollLink para el desplazamiento suave
       return navLinks.map(link => (
         <ScrollLink
           key={link.to}
@@ -55,7 +54,6 @@ const Navbar = () => {
         </ScrollLink>
       ));
     } else {
-      // Si estamos en otra página (ej. blog), usamos Link de Next para volver a la home
       return navLinks.map(link => (
         <Link key={link.to} href={`/#${link.to}`} legacyBehavior>
           <a className={linkClass} onClick={() => isMobile && setIsOpen(false)}>
@@ -93,7 +91,10 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link href="/" legacyBehavior>
               <a className="cursor-pointer" onClick={() => setIsOpen(false)}>
-                <img src="/logo.png" alt="Virtus Tech Consulting Logo" className="h-12 w-auto" />
+                {/* --- ¡AQUÍ ESTÁ LA MAGIA! Le damos al logo su propio fondo blanco --- */}
+                <div className="bg-white p-2 rounded-md shadow-sm">
+                  <img src="/logo.png" alt="Virtus Tech Consulting Logo" className="h-10 w-auto" />
+                </div>
               </a>
             </Link>
           </div>
