@@ -39,7 +39,7 @@ const BlogSection = () => {
                                 <img className="h-56 w-full object-cover" src={post.imageUrl} alt={t(post.titleKey)} />
                                 <div className="p-6">
                                     <h3 className="text-xl font-bold text-virtus-dark mb-2">{t(post.titleKey)}</h3>
-                                    <p className="text-gray-600 mb-4 text-sm">{t(post.summaryKey)}</p>
+                                    <p className="text-gray-600 mb-4 text-sm text-justify">{t(post.summaryKey)}</p>
                                     <span className="font-bold text-virtus-blue hover:text-virtus-blue-light">{t('blog.cta')} &rarr;</span>
                                 </div>
                             </a>
