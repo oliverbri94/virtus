@@ -55,7 +55,7 @@ const BlogPost = () => {
                                 />
                             )}
 
-                            <div className="prose lg:prose-xl max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: t(contentKey) }}>
+                            <div className="prose lg:prose-xl max-w-none text-gray-700 text-justify" dangerouslySetInnerHTML={{ __html: t(contentKey) }}>
                             </div>
                         </div>
                     </div>
