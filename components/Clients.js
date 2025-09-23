@@ -28,8 +28,11 @@ const Clients = () => {
             </div>
           ))}
         </div>
-        <div className="mt-16">
-          <a href="#contact" className="bg-virtus-blue-light text-white font-bold py-3 px-8 rounded-full hover:bg-virtus-blue transition duration-300 shadow-lg text-lg">
+        <div className="mt-12 text-center">
+          <a
+            href="#contact"
+            className="inline-block bg-virtus-blue-light text-white font-bold py-3 px-6 sm:px-8 md:px-10 rounded-full hover:bg-virtus-blue transition duration-300 shadow-lg text-base sm:text-lg md:text-xl"
+          >
             Sé Nuestro Próximo Caso de Éxito
           </a>
         </div>
