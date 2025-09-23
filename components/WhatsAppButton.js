@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 const WhatsAppButton = () => {
   const { t } = useTranslation();
   const phoneNumber = "593959687438"; // Reemplaza con tu número de teléfono
-  const message = t('whatsapp.message');
+  const message = t('Hola. Quisiera más información sobre sus servicios.');
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
