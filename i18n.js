@@ -156,6 +156,10 @@ const resources = {
       "contact": {
         "title": "Hablemos de tu Potencial",
         "subtitle": "Agenda un diagnóstico gratuito de 30 minutos y descubre las oportunidades de automatización ocultas en tu empresa. Sin compromiso, con resultados claros.",
+        "cal": {
+          "title": "¿Listo para dar el primer paso?",
+          "cta": "Agendar Diagnóstico Gratuito"
+        },
         "form": {
           "name": "Nombre Completo",
           "email": "Correo Electrónico",
@@ -327,6 +331,11 @@ const resources = {
       "contact": {
         "title": "Let's Talk About Your Potential",
         "subtitle": "Schedule a free 30-minute diagnosis and discover the hidden automation opportunities in your company. No commitment, with clear results.",
+        "cal": {
+          "title": "Ready to take the first step?",
+          "cta": "Schedule Free Diagnosis"
+        },
+        
         "form": {
           "name": "Full Name",
           "email": "Email Address",
