@@ -14,7 +14,7 @@ const resources = {
       },
       "hero": {
         "title": "Automatizamos tu Potencial",
-        "subtitle": "Ayudamos a las empresas en Ecuador a transformar sus procesos manuales en ventajas competitivas a través de la Automatización Robótica de Procesos (RPA).",
+        "subtitle": "Impulsamos la evolución digital de empresas en Ecuador, integrando RPA, inteligencia artificial y rediseño de procesos para construir operaciones más ágiles, precisas y escalables.",
         "cta": "Agenda tu Diagnóstico Gratuito"
       },
       "clients": {
@@ -189,7 +189,7 @@ const resources = {
       },
       "hero": {
         "title": "We Automate Your Potential",
-        "subtitle": "We help companies in Ecuador transform their manual processes into competitive advantages through Robotic Process Automation (RPA).",
+        "subtitle": "We drive the digital evolution of companies in Ecuador by integrating RPA, artificial intelligence, and process redesign to build more agile, accurate, and scalable operations.",
         "cta": "Schedule Your Free Diagnosis"
       },
       "clients": {
