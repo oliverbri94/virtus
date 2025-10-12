@@ -1,10 +1,10 @@
 // pages/index.js
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
-import Contact from '../components/Contact'; // <-- La versión simple de la "Prueba de Fuego"
+import HeroConPlexo from '../components/HeroConPlexo'; // <-- ¡El sospechoso entra en escena!
+import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 
-// La función de traducción. ¡La dejamos! Es importante.
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Home() {
@@ -16,13 +16,12 @@ export default function Home() {
 
       <Navbar />
       
-      <main style={{ paddingTop: '100px', paddingBottom: '50px', textAlign: 'center' }}>
-        <h1 className="text-5xl font-bold">Página de Prueba</h1>
-        <p className="mt-4 text-xl">Si ves esto y la sección de contacto de abajo, la base funciona.</p>
-        
-        {/* Aquí llamamos a nuestra versión simple de Contact */}
-        <Contact />
+      <main>
+        {/* Aquí llamamos a nuestro sospechoso */}
+        <HeroConPlexo />
 
+        {/* Y aquí a nuestra sección de prueba que sabemos que funciona */}
+        <Contact />
       </main>
 
       <Footer />
