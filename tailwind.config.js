@@ -7,11 +7,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'virtus-blue': {
-          DEFAULT: '#0B4F6C', // Un azul corporativo y profundo
-          light: '#20A4F3',   // El azul vibrante del logo
-        },
-        'virtus-dark': '#011627',    // Para textos principales
+        'virtus-blue': '#007BFF', // <-- Cambia este código por tu azul exacto
+        'virtus-blue-light': '#3395FF', // <-- Cambia este por tu azul claro
+        'virtus-dark': '#343a40', // <-- Cambia este por tu color oscuro
       },
     },
   },
