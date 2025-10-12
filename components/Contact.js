@@ -1,10 +1,11 @@
 // components/Contact.js
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+// Ya no necesitamos useTranslation, así que lo quitamos
+// import { useTranslation } from 'react-i18next';
 import { FaEnvelope, FaMapMarkerAlt, FaPhone, FaClock } from 'react-icons/fa';
 
 const Contact = () => {
-  const { t } = useTranslation();
+  // Quitamos la línea de const { t } = useTranslation();
   const [formState, setFormState] = useState({
     name: '', email: '', phone: '', serviceType: '', companySize: '', message: ''
   });
@@ -36,33 +37,30 @@ const Contact = () => {
   return (
     <section id="contacto" className="py-20 bg-gray-50">
       <div className="container mx-auto px-6">
-        {/* --- INICIO DE LA SOLUCIÓN AL ERROR SectionTitle --- */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800">{t('contact.title', 'Iniciemos una Conversación')}</h2>
+          {/* Reemplazamos t() con texto plano */}
+          <h2 className="text-4xl font-bold text-gray-800">Iniciemos una Conversación</h2>
           <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
-            {t('contact.subtitle', 'La forma más rápida de obtener respuestas es agendando una llamada.')}
+            La forma más rápida de obtener respuestas es agendando una llamada.
           </p>
         </div>
-        {/* --- FIN DE LA SOLUCIÓN --- */}
 
-        {/* --- INICIO DE LA MEJORA CON CAL.COM --- */}
         <div className="max-w-2xl mx-auto text-center mb-12">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">{t('contact.cal.title', 'Agenda un Diagnóstico de 30 Minutos')}</h3>
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">Agenda un Diagnóstico de 30 Minutos</h3>
           <a
             href="https://cal.com/oliver-briceno-nzreij/30min" 
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full text-xl transition-transform duration-300 transform hover:scale-105 shadow-lg"
           >
-            {t('contact.cal.cta', 'Ver Disponibilidad')}
+            Ver Disponibilidad
           </a>
         </div>
 
         <div className="text-center mb-12">
-          <p className="text-gray-600 font-bold">{t('contact.or', 'O si lo prefieres, déjanos un mensaje')}</p>
+          <p className="text-gray-600 font-bold">O si lo prefieres, déjanos un mensaje</p>
         </div>
 
-        {/* --- INICIO DEL NUEVO LAYOUT DE DOS COLUMNAS --- */}
         <div className="flex flex-col-reverse md:flex-row gap-12 lg:gap-16 max-w-6xl mx-auto">
           {/* Columna del Formulario */}
           <div className="md:w-3/5 lg:w-2/3">
@@ -77,25 +75,25 @@ const Contact = () => {
               <input type="hidden" name="form-name" value="contact-virtus-detailed" />
               <p className="hidden"><label>No llenes esto si eres humano: <input name="bot-field" /></label></p>
               
-              <input type="text" name="name" placeholder={t('contact.form.name', 'Nombre Completo')} value={formState.name} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required />
-              <input type="email" name="email" placeholder={t('contact.form.email', 'Email Corporativo')} value={formState.email} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required />
-              <input type="tel" name="phone" placeholder={t('contact.form.phone', 'Teléfono (Opcional)')} value={formState.phone} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" />
+              <input type="text" name="name" placeholder="Nombre Completo" value={formState.name} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required />
+              <input type="email" name="email" placeholder="Email Corporativo" value={formState.email} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required />
+              <input type="tel" name="phone" placeholder="Teléfono (Opcional)" value={formState.phone} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" />
               <select name="serviceType" value={formState.serviceType} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required>
-                <option value="">{t('contact.form.selectService', 'Selecciona un servicio...')}</option>
+                <option value="">Selecciona un servicio...</option>
                 <option value="rpa">RPA - Automatización Robótica</option>
                 <option value="consulting">Consultoría en Automatización</option>
                 <option value="support">Soporte y Mantenimiento</option>
                 <option value="training">Capacitación a Equipos</option>
               </select>
               <select name="companySize" value={formState.companySize} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required>
-                <option value="">{t('contact.form.companySize', 'Tamaño de tu empresa...')}</option>
+                <option value="">Tamaño de tu empresa...</option>
                 <option value="small">1-50 empleados</option>
                 <option value="medium">51-200 empleados</option>
                 <option value="large">200+ empleados</option>
               </select>
-              <textarea name="message" placeholder={t('contact.form.message', 'Cuéntanos sobre tu desafío...') } rows="4" value={formState.message} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required></textarea>
+              <textarea name="message" placeholder="Cuéntanos sobre tu desafío..." rows="4" value={formState.message} onChange={handleChange} className="block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150" required></textarea>
               
-              <button type="submit" className="w-full mt-6 bg-gray-800 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-700 transition duration-300">{t('contact.form.submit', 'Enviar Mensaje')}</button>
+              <button type="submit" className="w-full mt-6 bg-gray-800 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-700 transition duration-300">Enviar Mensaje</button>
             </form>
           </div>
 
