@@ -1,62 +1,76 @@
-import { useCallback } from 'react';
+// components/HeroConPlexo.js
+import { useState, useEffect, useCallback } from 'react';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
 const HeroConPlexo = () => {
+
+  const [isClient, setIsClient] = useState(false);
+
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+
   const particlesInit = useCallback(async engine => {
     await loadFull(engine);
   }, []);
 
   return (
     <section className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        className="absolute inset-0 z-0"
-        options={{
-          background: {
-            color: {
-              value: "#111827", // Este es el color oscuro que queremos (equivale a bg-gray-900)
-            },
-          },
-          fpsLimit: 60,
-          interactivity: {
-            events: {
-              onHover: {
-                enable: true,
-                mode: "repulse",
+      {isClient && (
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          className="absolute inset-0 z-0"
+          options={{
+            background: {
+              color: {
+                value: "#111827",
               },
-              resize: true,
             },
-          },
-          particles: {
-            color: { value: "#ffffff" },
-            links: {
-              color: "#ffffff",
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
+            fpsLimit: 60,
+            interactivity: {
+              events: {
+                onHover: {
+                  enable: true,
+                  mode: "repulse",
+                },
+                resize: true,
+              },
             },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: { default: "bounce" },
-              random: false,
-              speed: 2,
-              straight: false,
+            particles: {
+              color: { value: "#ffffff" },
+              links: {
+                color: "#ffffff",
+                distance: 150,
+                enable: true,
+                opacity: 0.5,
+                width: 1,
+              },
+              move: {
+                direction: "none",
+                enable: true,
+                outModes: { default: "bounce" },
+                random: false,
+                speed: 2,
+                straight: false,
+              },
+              number: {
+                density: { enable: true, area: 800 },
+                value: 80,
+              },
+              opacity: { value: 0.5 },
+              shape: { type: "circle" },
+              size: { value: { min: 1, max: 5 } },
             },
-            number: {
-              density: { enable: true, area: 800 },
-              value: 80,
-            },
-            opacity: { value: 0.5 },
-            shape: { type: "circle" },
-            size: { value: { min: 1, max: 5 } },
-          },
-          detectRetina: true,
-        }}
-      />
+            detectRetina: true,
+          }}
+        />
+      )}
+      
+      {/* El texto siempre estará visible, por encima de las partículas */}
       <div className="relative z-10 p-6">
         <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-4">
           Potenciamos su transformación digital
