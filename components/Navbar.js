@@ -8,7 +8,7 @@ const Navbar = () => {
         {/* Logo de Virtus */}
         <Link href="/" legacyBehavior>
           <a className="flex items-center">
-            <Image src="/public/logo.png" alt="Virtus Tech Consulting Logo" width={180} height={40} />
+            <Image src="/logo.png" alt="Virtus Tech Consulting Logo" width={180} height={40} />
           </a>
         </Link>
 
