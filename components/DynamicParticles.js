@@ -1,11 +1,13 @@
 // components/DynamicParticles.js
 import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+// 1. CAMBIO IMPORTANTE: Importamos loadSlim desde el nuevo motor
+import { loadSlim } from "tsparticles-slim"; 
 import { useCallback } from "react";
 
 const ParticleComponent = () => {
   const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
+    // 2. CAMBIO IMPORTANTE: Le decimos que cargue el motor SLIM
+    await loadSlim(engine);
   }, []);
 
   return (
