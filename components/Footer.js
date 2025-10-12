@@ -1,42 +1,57 @@
-import { useTranslation } from 'react-i18next';
-import { FaPhone, FaEnvelope } from 'react-icons/fa';
+// components/Footer.js
+import Link from 'next/link';
+import Image from 'next/image';
 
 const Footer = () => {
-    const { t } = useTranslation();
+  // Icono para redes sociales (un componente simple dentro del footer)
+  const SocialIcon = ({ href, children }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors duration-300">
+      {children}
+    </a>
+  );
 
-    return (
-        <footer className="bg-virtus-dark text-white">
-            <div className="container mx-auto px-4 py-12">
-                <div className="flex flex-wrap justify-between items-center text-center md:text-left">
-                    <div className="w-full md:w-1/3 mb-6 md:mb-0">
-                        {/* --- ¡AQUÍ ESTÁ LA MAGIA! El logo original con su propio fondo blanco --- */}
-                        <div className="inline-block bg-white p-2 rounded-md shadow-sm mx-auto md:mx-0">
-                            <img src="/logo.png" alt="Virtus Tech Consulting Logo" className="h-12 w-auto" />
-                        </div>
-                        <p className="mt-4 text-gray-400">{t('footer.slogan')}</p>
-                    </div>
+  return (
+    <footer className="bg-gray-800 text-white">
+      <div className="container mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          
+          {/* Columna 1: Logo y Descripción */}
+          <div className="md:col-span-2">
+            <Image src="/logo-white.png" alt="Virtus Tech Consulting Logo Blanco" width={180} height={40} />
+            <p className="mt-4 text-gray-400 max-w-sm">
+              Potenciamos la transformación digital con soluciones tecnológicas integrales para líderes de la industria.
+            </p>
+          </div>
 
-                    <div className="w-full md:w-1/3 mb-6 md:mb-0">
-                        <h4 className="font-bold mb-2">Contacto Directo</h4>
-                        <a href="tel:+593959687438" className="flex items-center justify-center md:justify-start text-gray-300 hover:text-white mb-2">
-                            <FaPhone className="mr-2" /> +593 95 968 7438
-                        </a>
-                        <a href="mailto:contacto@virtusecuador.com" className="flex items-center justify-center md:justify-start text-gray-300 hover:text-white">
-                            <FaEnvelope className="mr-2" /> contacto@virtusecuador.com
-                        </a>
-                    </div>
-                    
-                    <div className="w-full md:w-1/3">
-                       <p className="text-lg italic text-gray-300">"{t('footer.quote')}"</p>
-                    </div>
-                </div>
-                <div className="text-center text-gray-500 border-t border-gray-700 mt-8 pt-6 text-sm">
-                    <p>&copy; {new Date().getFullYear()} Virtus Tech Consulting. Todos los derechos reservados.</p>
-                </div>
+          {/* Columna 2: Enlaces Rápidos */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Navegación</h4>
+            <ul className="space-y-2">
+              <li><Link href="#soluciones" legacyBehavior><a className="text-gray-400 hover:text-white">Soluciones</a></Link></li>
+              <li><Link href="#resultados" legacyBehavior><a className="text-gray-400 hover:text-white">Resultados</a></Link></li>
+              <li><Link href="#metodologia" legacyBehavior><a className="text-gray-400 hover:text-white">Metodología</a></Link></li>
+              <li><Link href="#contacto" legacyBehavior><a className="text-gray-400 hover:text-white">Contacto</a></Link></li>
+            </ul>
+          </div>
+
+          {/* Columna 3: Conéctate */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Conéctate</h4>
+            <div className="flex space-x-4">
+              <SocialIcon href="#"> {/* Reemplaza # con tu URL de LinkedIn */}
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd"/></svg>
+              </SocialIcon>
+              {/* Agrega más íconos para otras redes si lo deseas */}
             </div>
-        </footer>
-    );
+          </div>
+        </div>
+
+        <div className="mt-12 border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+          <p>&copy; {new Date().getFullYear()} Virtus Tech Consulting. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;
-

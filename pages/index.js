@@ -1,32 +1,23 @@
 import Head from 'next/head';
-import { useTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import Clients from '../components/Clients';
-import ServicesOverview from '../components/ServicesOverview';
-import WhyVirtus from '../components/WhyVirtus';
-import IndustrySolutions from '../components/IndustrySolutions';
-import CaseStudies from '../components/CaseStudies';
-import Methodology from '../components/Methodology';
-import BlogSection from '../components/BlogSection';
+import HeroConPlexo from '../components/HeroConPlexo'; // Nuevo componente
+import Soluciones from '../components/Soluciones'; // Nuevo componente
+import Resultados from '../components/Resultados'; // Nuevo componente
+import Metodologia from '../components/Metodologia'; // Componente simplificado
+import BlogSection from '../components/BlogSection'; // <--- ¡Añádelo de nuevo!
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 
 export default function Home() {
-  const { t } = useTranslation();
-
-  const siteTitle = "Virtus Tech Consulting - Automatización y RPA en Ecuador";
-  const siteDescription = t('hero.subtitle');
-  const siteUrl = "https://www.virtusecuador.com"; // Reemplaza con tu dominio final
-  const siteImage = `${siteUrl}/og-image.png`;
-
+  const siteTitle = "Virtus Tech Consulting - Potenciamos su transformación digital";
+  // ... (puedes mantener el resto de tu configuración de Head)
 
   return (
     <div className="bg-white">
       <Head>
         <title>Virtus Tech Consulting - Automatización y RPA en Ecuador</title>
-        <meta name="description" content="Ayudamos a empresas en Ecuador a transformar sus procesos manuales en ventajas competitivas a través de la Automatización Robótica de Procesos (RPA)." />
+        <meta name="description" content="Ayudamos a empresas en Ecuador a transformar sus procesos manuales en ventajas competitivas a través de la Automatización Robótica de Procesos (RPA) e IA." />
         <link rel="icon" href="/favicon.ico" />
 
         <meta property="og:type" content="website" />
@@ -51,20 +42,16 @@ export default function Home() {
       <Navbar />
       
       <main>
-        <Hero />
-        <Clients />
-        <ServicesOverview />
-        <WhyVirtus />
-        <IndustrySolutions />
-        <CaseStudies />
-        <Methodology />
-        <BlogSection />
+        <HeroConPlexo />
+        <Soluciones />
+        <Resultados />
+        <Metodologia />
+        <BlogSection /> 
         <Contact />
       </main>
 
       <WhatsAppButton />
       <Footer />
     </div>
-  )
+  );
 }
-
