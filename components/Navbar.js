@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+//import Image from 'next/image';
 
 const Navbar = () => {
   return (
@@ -8,7 +8,7 @@ const Navbar = () => {
         {/* Logo de Virtus */}
         <Link href="/" legacyBehavior>
           <a className="flex items-center">
-            <Image src="/logo.png" alt="Virtus Tech Consulting Logo" width={180} height={40} />
+            <img src="/logo.png" alt="Virtus Tech Consulting Logo" style={{ width: '180px', height: 'auto' }} />
           </a>
         </Link>
 
