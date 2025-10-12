@@ -1,46 +1,41 @@
 // pages/index.js
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
-import HeroConPlexo from '../components/HeroConPlexo';
-import Soluciones from '../components/Soluciones'; // <-- Sigue aquí
-import Resultados from '../components/Resultados';
-import Metodologia from '../components/Metodologia';
-import BlogSection from '../components/BlogSection';
-import Contact from '../components/Contact'; // <-- La versión completa con traducciones
+import Soluciones from '../components/Soluciones'; // <-- El primer componente real
 import Footer from '../components/Footer';
-import WhatsAppButton from '../components/WhatsAppButton';
-
-// ... (El resto de tus imports)
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next'; // <-- Importante: usar este import
 
 export default function Home() {
+  const { t } = useTranslation('common'); // <-- Llamamos al hook aquí
+
   return (
     <div>
       <Head>
-        <title>Virtus Tech Consulting</title>
-        {/* ... El resto de tu Head ... */}
+        <title>Página de Reconstrucción</title>
       </Head>
 
       <Navbar />
       
       <main>
-        <HeroConPlexo />
+        {/* Usamos el título del hook para probar que funciona */}
+        <h1 className="text-5xl font-bold text-center pt-32">
+          {t('hero.title')} 
+        </h1>
 
-        {/* --- PRUEBA DE FUEGO #2: VAMOS A COMENTAR ESTA LÍNEA --- */}
-        {/* <Soluciones /> */} 
-        
-        <Resultados />
-        <Metodologia />
-        <BlogSection />
-        <Contact /> 
+        <Soluciones />
       </main>
 
-      <WhatsAppButton />
       <Footer />
     </div>
   );
 }
 
-// ... (Tu función getStaticProps se queda igual)
-export async function getStaticProps({ locale }) { /* ... */ }
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'es', ['common'])),
+    },
+  };
+}
