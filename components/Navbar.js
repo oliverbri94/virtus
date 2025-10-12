@@ -8,12 +8,10 @@ const Navbar = () => {
         {/* Logo de Virtus */}
         <Link href="/" legacyBehavior>
           <a className="flex items-center">
-            {/* Aquí usamos la imagen que subiste */}
-            <Image src="/logo.png" alt="Virtus Tech Consulting Logo" width={180} height={40} />
+            <Image src="/public/logo.png" alt="Virtus Tech Consulting Logo" width={180} height={40} />
           </a>
         </Link>
 
-        {/* Menú de Navegación para Escritorio */}
         <div className="hidden md:flex items-center space-x-6">
           <Link href="#soluciones" legacyBehavior><a className="text-gray-800 hover:text-blue-600 transition-colors duration-300">Soluciones</a></Link>
           <Link href="#resultados" legacyBehavior><a className="text-gray-800 hover:text-blue-600 transition-colors duration-300">Resultados</a></Link>
