@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import SectionTitle from './SectionTitle';
 import { FaEnvelope, FaMapMarkerAlt, FaPhone, FaClock } from 'react-icons/fa';
 
 const Contact = () => {
@@ -55,7 +54,6 @@ const Contact = () => {
         <div className="max-w-2xl mx-auto text-center mb-12">
           <h3 className="text-2xl font-bold text-virtus-dark mb-4">{t('contact.cal.title')}</h3>
           <a
-            // ¡IMPORTANTE! Reemplaza este enlace con tu propio enlace de Cal.com
             href="https://cal.com/oliver-briceno-nzreij/30min" 
             target="_blank"
             rel="noopener noreferrer"
@@ -64,14 +62,12 @@ const Contact = () => {
             {t('contact.cal.cta')}
           </a>
         </div>
-        {/* --- FIN DE LA MEJORA CON CAL.COM --- */}
 
         <div className="text-center mb-12">
             <p className="text-gray-600 font-bold">{t('contact.or')}</p>
         </div>
 
         <div className="flex flex-wrap-reverse lg:flex-wrap items-stretch max-w-6xl mx-auto">
-          {/* Columna del Formulario */}
           <div className="w-full lg:w-1/2 p-4">
             <form 
               name="contact-virtus-detailed" 
