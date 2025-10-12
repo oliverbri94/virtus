@@ -2,13 +2,8 @@
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import HeroConPlexo from '../components/HeroConPlexo';
-import Soluciones from '../components/Soluciones';
-import Resultados from '../components/Resultados';
-import Metodologia from '../components/Metodologia';
-import BlogSection from '../components/BlogSection';
-import Contact from '../components/Contact'; // <-- El verdadero, el final
+import Soluciones from '../components/Soluciones'; // <-- Sabemos que este es inocente
 import Footer from '../components/Footer';
-import WhatsAppButton from '../components/WhatsAppButton';
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -16,22 +11,13 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Virtus Tech Consulting - Automatización y RPA en Ecuador</title>
-        {/* Aquí puedes volver a poner tus meta tags de SEO si quieres */}
+        <title>Base Segura - Virtus</title>
       </Head>
-
       <Navbar />
-      
       <main>
         <HeroConPlexo />
         <Soluciones />
-        <Resultados />
-        <Metodologia />
-        <BlogSection />
-        <Contact /> 
       </main>
-
-      <WhatsAppButton />
       <Footer />
     </div>
   );
