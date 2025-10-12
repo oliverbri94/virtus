@@ -39,7 +39,6 @@ export default function Home() {
         <meta property="twitter:description" content={siteDescription} />
         <meta property="twitter:image" content={siteImage} />
 
-        {/* ... tus links de fuentes ... */}
       </Head>
 
       <Navbar />
@@ -57,4 +56,14 @@ export default function Home() {
       <Footer />
     </div>
   );
+}
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      // Asegúrate de que estás usando el namespace 'common' que creamos
+    },
+  };
 }

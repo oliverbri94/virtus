@@ -1,0 +1,35 @@
+{
+  "nav": {
+    "solutions": "Solutions",
+    "whyVirtus": "About Us",
+    "caseStudies": "Case Studies",
+    "methodology": "Methodology",
+    "blog": "Blog",
+    "cta": "Free Diagnosis"
+  },
+  "hero": {
+    "title": "We Automate Your Potential",
+    "subtitle": "We drive the digital evolution of companies in Ecuador by integrating RPA, artificial intelligence, and process redesign to build more agile, accurate, and scalable operations.",
+    "cta": "Schedule Your Free Diagnosis"
+  },
+  "contact": {
+    "title": "Let's Talk About Your Potential",
+    "subtitle": "Schedule a free 30-minute diagnosis and discover the hidden automation opportunities in your company. No commitment, with clear results.",
+    "cal": {
+      "title": "Ready to take the first step?",
+      "cta": "Schedule Free Diagnosis"
+    },
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "selectService": "Select a service...",
+      "companySize": "Your company size...",
+      "message": "Tell us about your main challenge",
+      "submit": "Schedule My Diagnosis"
+    },
+    "or": "Or contact us directly",
+    "successMessage": "Thank you for your message! We will contact you soon.",
+    "errorMessage": "There was an error sending the form. Please try again."
+  }
+}
