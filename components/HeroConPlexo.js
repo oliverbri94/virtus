@@ -8,7 +8,7 @@ const HeroConPlexo = () => {
   }, []);
 
   return (
-    <section className="relative h-screen flex items-center justify-center text-center bg-gray-900 text-white overflow-hidden">
+  <section className="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
       <Particles
         id="tsparticles"
         init={particlesInit}
