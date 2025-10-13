@@ -7,6 +7,7 @@ import Resultados from '../components/Resultados';
 import Metodologia from '../components/Metodologia';
 import BlogSection from '../components/BlogSection';
 import Contact from '../components/Contact';
+import Test from '../components/Test';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -25,6 +26,7 @@ export default function Home() {
         <Metodologia />
         <BlogSection />
         <Contact />
+        <Test />
         <WhatsAppButton />
         <Footer />
       </main>
