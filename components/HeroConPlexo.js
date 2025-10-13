@@ -23,10 +23,3 @@ const HeroConPlexo = () => {
 };
 
 export default HeroConPlexo;
-div>
-      </div>
-    </section>
-  );
-};
-
-export default HeroConPlexo;
