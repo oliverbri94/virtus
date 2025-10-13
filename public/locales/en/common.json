@@ -27,6 +27,42 @@
       "companySize": "Your company size...",
       "message": "Tell us about your main challenge",
       "submit": "Schedule My Diagnosis"
+    }
+  },
+  "blog": {
+    "title": "From Our Blog",
+    "subtitle": "Knowledge and trends on the future of automation and business efficiency.",
+    "cta": "Read more",
+    "viewAll": "View all articles",
+    "post1": {
+      "title": "What is RPA and How Can It Catapult Your SME?",
+      "summary": "We demystify Robotic Process Automation and show you with practical examples how it can be the best ally for your business growth."
+    },
+    "post2": {
+      "title": "3 Clear Signs You Need to Automate (Yesterday)",
+      "summary": "If your team lives in Excel, manual errors are a daily occurrence, or you feel you can't grow without hiring more administrative staff, this article is for you."
+    },
+    "post3": {
+      "title": "The Future is Now: RPA Agents with Artificial Intelligence",
+      "summary": "Automation has evolved. It's no longer just about repeating clicks, but about understanding documents, interpreting emails, and making decisions. Discover intelligent RPA Agents."
+    }
+  },
+  "resultados": {
+    "title": "Results That Inspire Confidence",
+    "subtitle": "Real stories of transformation and growth driven by our technology.",
+    "challengeLabel": "Challenge",
+    "solutionLabel": "Virtus Solution",
+    "case1": {
+      "title": "Shipping Guides Automation",
+      "challenge": "The manual generation of shipping guides consumed entire workdays, creating bottlenecks.",
+      "solution": "We developed an RPA bot that fully automated the creation, validation, and sending of guides.",
+      "result": "Reduction of 24 hours of manual work per processed batch."
+    },
+    "case2": {
+      "title": "High-Performance E-commerce",
+      "challenge": "Manual catalog management was inefficient, and the online shopping experience could be improved.",
+      "solution": "We implemented a custom e-commerce solution, optimized for intuitive and fast navigation.",
+      "result": "Savings of 1 hour daily in catalog management and a notable improvement in customer experience."
     },
     "or": "Or contact us directly",
     "successMessage": "Thank you for your message! We will contact you soon.",

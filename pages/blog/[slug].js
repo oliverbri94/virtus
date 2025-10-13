@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -48,7 +49,9 @@ const BlogPost = () => {
                             <h1 className="text-4xl md:text-5xl font-bold text-virtus-dark mb-6">{t(titleKey)}</h1>
                             
                             {post && (
-                                <img 
+                                <Image 
+                                    width={800} 
+                                    height={450} 
                                     src={post.imageUrl} 
                                     alt={t(titleKey)} 
                                     className="w-full h-auto object-cover rounded-lg shadow-lg mb-8"

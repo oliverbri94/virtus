@@ -7,6 +7,42 @@
     "blog": "Blog",
     "cta": "Diagnóstico Gratuito"
   },
+  "blog": {
+    "title": "Desde Nuestro Blog",
+    "subtitle": "Conocimiento y tendencias sobre el futuro de la automatización y la eficiencia empresarial.",
+    "cta": "Leer más",
+    "viewAll": "Ver todos los artículos",
+    "post1": {
+      "title": "¿Qué es RPA y cómo puede catapultar a tu PYME?",
+      "summary": "Desmitificamos la Automatización Robótica de Procesos y te mostramos con ejemplos prácticos cómo puede ser el mejor aliado para el crecimiento de tu negocio."
+    },
+    "post2": {
+      "title": "3 Señales Claras de que Necesitas Automatizar (Ayer)",
+      "summary": "Si tu equipo vive en Excel, los errores manuales son el pan de cada día o sientes que no puedes crecer sin contratar más personal administrativo, este artículo es para ti."
+    },
+    "post3": {
+      "title": "El Futuro es Ahora: Agentes RPA con Inteligencia Artificial",
+      "summary": "La automatización ha evolucionado. Ya no se trata solo de repetir clics, sino de entender documentos, interpretar correos y tomar decisiones. Descubre los Agentes RPA inteligentes."
+    }
+  },
+  "resultados": {
+    "title": "Resultados que Inspiran Confianza",
+    "subtitle": "Historias reales de transformación y crecimiento impulsadas por nuestra tecnología.",
+    "challengeLabel": "Desafío",
+    "solutionLabel": "Solución Virtus",
+    "case1": {
+      "title": "Automatización de Guías de Remisión",
+      "challenge": "La generación manual de guías consumía jornadas enteras, generando cuellos de botella.",
+      "solution": "Desarrollamos un bot de RPA que automatizó por completo el proceso de creación, validación y envío de guías.",
+      "result": "Reducción de 24 horas de trabajo manual por cada lote procesado."
+    },
+    "case2": {
+      "title": "E-commerce de Alto Rendimiento",
+      "challenge": "La gestión manual del catálogo era ineficiente y la experiencia de compra online podía mejorar.",
+      "solution": "Implementamos una solución de e-commerce a medida, optimizada para una navegación intuitiva y rápida.",
+      "result": "Ahorro de 1 hora diaria en gestión de catálogo y una notable mejora en la experiencia del cliente."
+    }
+  },
   "hero": {
     "title": "Automatizamos tu Potencial",
     "subtitle": "Impulsamos la evolución digital de empresas en Ecuador, integrando RPA, inteligencia artificial y rediseño de procesos para construir operaciones más ágiles, precisas y escalables.",
