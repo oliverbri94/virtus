@@ -16,9 +16,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
           {/* Columna 1: Logo y Descripción */}
-          <div className="md:col-span-2">
-            <Image src="/logo-white.png" alt="Virtus Tech Consulting Logo Blanco" width={180} height={40} />
-            <p className="mt-4 text-gray-400 max-w-sm">
+          <div class="md:col-span-2">
+            <Image src="/logo.png" alt="Virtus Tech Consulting Logo Blanco" width={180} height={40} />
+            <p class="mt-4 text-gray-400 max-w-sm">
               Potenciamos la transformación digital con soluciones tecnológicas integrales para líderes de la industria.
             </p>
           </div>
