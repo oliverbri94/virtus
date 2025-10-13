@@ -14,7 +14,15 @@ const ParticleComponent = () => {
     <Particles
       id="tsparticles"
       init={particlesInit}
-      className="absolute inset-0 z-0"
+      style={{
+        position: "absolute",
+        zIndex: 0,
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+      }}
       options={{
         background: { color: { value: "#111827" } },
         fpsLimit: 60,
