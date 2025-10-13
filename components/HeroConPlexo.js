@@ -7,7 +7,7 @@ const DynamicParticleComponent = dynamic(() => import('./DynamicParticles'), {
 
 const HeroConPlexo = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center text-center text-white overflow-hidden bg-gray-900">
+    <section className="relative flex items-center justify-center text-center text-white overflow-hidden bg-gray-900">
       <DynamicParticleComponent />
       
       <div className="relative z-10 p-6">
