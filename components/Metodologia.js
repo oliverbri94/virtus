@@ -17,17 +17,17 @@ const steps = [
 
 const Metodologia = () => {
   return (
-    <section id="metodologia" className="py-20 bg-gray-50">
+    <section id="metodologia" className="py-20">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800">Nuestro Proceso, Tu Tranquilidad</h2>
-          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold text-white">Nuestro Proceso, Tu Tranquilidad</h2>
+          <p className="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">
             Una metodología de 3 pasos, diseñada para entregar valor desde el primer día.
           </p>
         </div>
         <div className="relative">
           {/* Línea de conexión para escritorio */}
-          <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-300" style={{ transform: 'translateY(-50%)' }}></div>
+          <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-700" style={{ transform: 'translateY(-50%)' }}></div>
           
           <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12">
             {steps.map((step, index) => (

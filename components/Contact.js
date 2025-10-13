@@ -16,15 +16,15 @@ const Contact = () => {
   const handleChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
 
   return (
-    <section id="contacto" className="py-20 bg-gray-50">
+    <section id="contacto" className="py-20">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800">{t('contact.title')}</h2>
-          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">{t('contact.subtitle')}</p>
+          <h2 className="text-4xl font-bold text-white">{t('contact.title')}</h2>
+          <p className="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">{t('contact.subtitle')}</p>
         </div>
 
         <div className="max-w-2xl mx-auto text-center mb-12">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">{t('contact.cal.title')}</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">{t('contact.cal.title')}</h3>
           <a
             href="https://cal.com/oliver-briceno-nzreij/30min" 
             target="_blank"
@@ -36,7 +36,7 @@ const Contact = () => {
         </div>
 
         <div className="text-center mb-12">
-          <p className="text-gray-600 font-bold">{t('contact.or')}</p>
+          <p className="text-gray-300 font-bold">{t('contact.or')}</p>
         </div>
 
         <div className="flex flex-col-reverse md:flex-row gap-12 lg:gap-16 max-w-6xl mx-auto">

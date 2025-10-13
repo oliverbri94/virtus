@@ -29,8 +29,8 @@ const Soluciones = () => {
     <section id="soluciones" className="py-20">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800">Nuestras Soluciones Integrales</h2>
-          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold text-white">Nuestras Soluciones Integrales</h2>
+          <p className="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">
             Un ecosistema de herramientas diseñadas para potenciar cada área de tu negocio.
           </p>
         </div>

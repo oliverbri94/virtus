@@ -14,14 +14,14 @@ const CaseStudy = ({ client, titleKey, challengeKey, solutionKey, resultKey, ima
 
       {/* Columna del Texto */}
       <div className="md:w-1/2">
-        <span className="text-blue-600 font-semibold">{client}</span>
-        <h3 className="text-3xl font-bold text-gray-800 mt-2 mb-4">{t(titleKey)}</h3>
-        <p className="text-gray-600 mb-3"><strong className="text-gray-900">{t('resultados.challengeLabel')}:</strong> {t(challengeKey)}</p>
-        <p className="text-gray-600 mb-6"><strong className="text-gray-900">{t('resultados.solutionLabel')}:</strong> {t(solutionKey)}</p>
+        <span className="text-blue-400 font-semibold">{client}</span>
+        <h3 className="text-3xl font-bold text-white mt-2 mb-4">{t(titleKey)}</h3>
+        <p className="text-gray-300 mb-3"><strong className="text-gray-100">{t('resultados.challengeLabel')}:</strong> {t(challengeKey)}</p>
+        <p className="text-gray-300 mb-6"><strong className="text-gray-100">{t('resultados.solutionLabel')}:</strong> {t(solutionKey)}</p>
         
         {/* El resultado destacado */}
-        <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-          <p className="text-lg font-bold text-blue-800">{t(resultKey)}</p>
+        <div className="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+          <p className="text-lg font-bold text-blue-300">{t(resultKey)}</p>
         </div>
       </div>
     </div>
@@ -33,11 +33,11 @@ const Resultados = () => {
   const { t } = useTranslation('common');
 
   return (
-    <section id="resultados" className="py-20 bg-white">
+    <section id="resultados" className="py-20">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800">{t('resultados.title')}</h2>
-          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold text-white">{t('resultados.title')}</h2>
+          <p className="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">
             {t('resultados.subtitle')}
           </p>
         </div>
