@@ -14,18 +14,7 @@ const ParticleComponent = () => {
     <Particles
       id="tsparticles"
       init={particlesInit}
-      style={{
-        position: "absolute",
-        zIndex: 0,
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-      }}
       options={{
-        fullScreen: { enable: false },
-        background: { color: { value: "#111827" } },
         fpsLimit: 60,
         interactivity: {
           events: {
