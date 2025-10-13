@@ -25,9 +25,9 @@ export default function Home() {
         <Metodologia />
         <BlogSection />
         <Contact />
+        <WhatsAppButton />
+        <Footer />
       </main>
-      <WhatsAppButton />
-      <Footer />
     </div>
   );
 }
