@@ -1,6 +1,6 @@
 // pages/index.js
 // ... (imports)
-import Metodologia from '../components/Metodologia'; // <-- Añadimos al sospechoso
+import Resultados from '../components/Resultados'; // <-- Asegúrate que esté aquí
 
 export default function Home() {
   return (
@@ -9,8 +9,11 @@ export default function Home() {
       <main>
         <HeroConPlexo />
         <Soluciones />
-        <Resultados />
-        <Metodologia /> {/* <--- ¡EL SIGUIENTE SOSPECHOSO! */}
+        <Resultados /> {/* <--- ¡EL SOSPECHOSO ESTÁ EN LA SALA! */}
+        {/* Podemos dejar los otros comentados por ahora para ir más rápido */}
+        {/* <Metodologia /> */}
+        {/* <BlogSection /> */}
+        {/* <Contact /> */}
       </main>
       <Footer />
     </div>
