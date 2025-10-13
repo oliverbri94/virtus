@@ -22,9 +22,9 @@ const ParticleComponent = () => {
         width: "100%",
         height: "100%",
         pointerEvents: "none",
-        border: "5px solid red",
       }}
       options={{
+        fullScreen: { enable: false },
         background: { color: { value: "#111827" } },
         fpsLimit: 60,
         interactivity: {
