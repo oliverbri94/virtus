@@ -9,8 +9,12 @@ import BlogSection from '../components/BlogSection';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
-import DynamicParticles from '../components/DynamicParticles';
+import dynamic from 'next/dynamic';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+const DynamicParticles = dynamic(() => import('../components/DynamicParticles'), {
+  ssr: false
+});
 
 export default function Home() {
   return (
