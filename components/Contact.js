@@ -69,7 +69,6 @@ const Contact = () => {
               method="POST" 
               data-netlify="true" 
               data-netlify-honeypot="bot-field"
-              onSubmit={handleSubmit}
               className="bg-white p-8 rounded-lg shadow-lg h-full space-y-4"
             >
               <input type="hidden" name="form-name" value="contact-virtus-detailed" />
