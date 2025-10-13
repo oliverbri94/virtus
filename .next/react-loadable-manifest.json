@@ -1,21 +1,9 @@
 {
   "components\\HeroConPlexo.js -> ./DynamicParticles": {
-    "id": 4254,
+    "id": 9624,
     "files": [
-      "static/chunks/954.62f8dc41995da5b2.js",
-      "static/chunks/254.f5c1e4c5c09e1271.js"
-    ]
-  },
-  "node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
-    "id": 1806,
-    "files": [
-      "static/chunks/806.a7e9447414a53493.js"
-    ]
-  },
-  "node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
-    "id": 8123,
-    "files": [
-      "static/chunks/123.f3d27f38429d3ab5.js"
+      "static/chunks/737.f6b570f7b569315b.js",
+      "static/chunks/624.eac68e9cc5711fef.js"
     ]
   }
 }
