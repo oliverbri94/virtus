@@ -9,7 +9,7 @@ const HeroConPlexo = () => {
         <h1 className="text-5xl md:text-7xl font-semibold leading-tight mb-4 text-gray-100" style={{ animation: 'fade-in-up 0.5s 0.2s both' }}>
           {t('hero.title')}
         </h1>
-        <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto tracking-wide" style={{ animation: 'fade-in-up 0.5s 0.4s both' }}>
+        <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto tracking-wide" style={{ animation: 'fade-in-up 0.5s 0.4s both', textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
           {t('hero.subtitle')}
         </p>
         <div className="mt-8" style={{ animation: 'fade-in-up 0.5s 0.6s both' }}>
@@ -17,6 +17,13 @@ const HeroConPlexo = () => {
             {t('hero.cta', 'Descubre Cómo')}
           </button>
         </div>
+      </div>
+    </section>
+  );
+};
+
+export default HeroConPlexo;
+div>
       </div>
     </section>
   );

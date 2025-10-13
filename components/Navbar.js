@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
       </nav>
       {isMenuOpen && (
-        <div className="md:hidden bg-white/80 backdrop-blur-lg py-4">
+        <div className="md:hidden bg-white/40 backdrop-blur-lg py-4 border-t border-gray-200/60">
           <Link href="#soluciones" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Soluciones</a></Link>
           <Link href="#resultados" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Resultados</a></Link>
           <Link href="#metodologia" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Metodología</a></Link>

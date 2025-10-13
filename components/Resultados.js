@@ -7,7 +7,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 // Data for the case studies
 const caseStudies = [
   {
-    client: 'Empresa de Logística',
+    client: 'Aromotor Cia. Ltda.',
     titleKey: 'resultados.case1.title',
     challengeKey: 'resultados.case1.challenge',
     solutionKey: 'resultados.case1.solution',
@@ -16,7 +16,7 @@ const caseStudies = [
     imageAlt: 'Automatización logística',
   },
   {
-    client: 'Aromotor',
+    client: 'Aromotor Cia. Ltda.',
     titleKey: 'resultados.case2.title',
     challengeKey: 'resultados.case2.challenge',
     solutionKey: 'resultados.case2.solution',
