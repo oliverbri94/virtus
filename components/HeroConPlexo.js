@@ -6,7 +6,7 @@ const HeroConPlexo = () => {
   return (
     <section className="relative flex items-center justify-center h-screen text-center overflow-hidden">
       <div className="relative z-10 p-6 flex flex-col items-center">
-        <h1 className="text-5xl md:text-7xl font-semibold leading-tight mb-4 text-gray-100" style={{ animation: 'fade-in-up 0.5s 0.2s both' }}>
+        <h1 className="text-5xl md:text-7xl font-semibold leading-tight mb-4 bg-gradient-to-r from-virtus-blue to-virtus-blue-light bg-clip-text text-transparent" style={{ animation: 'fade-in-up 0.5s 0.2s both', textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
           {t('hero.title')}
         </h1>
         <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto tracking-wide" style={{ animation: 'fade-in-up 0.5s 0.4s both', textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
