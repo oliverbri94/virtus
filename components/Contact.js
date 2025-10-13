@@ -15,28 +15,6 @@ const Contact = () => {
 
   const handleChange = (e) => setFormState({ ...formState, [e.target.name]: e.target.value });
 
-  // Tu lógica para Netlify, que no se toca porque es genial
-  const encode = (data) => {
-    return Object.keys(data).map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])).join("&");
-  }
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact-virtus-detailed", ...formState })
-    })
-    .then(() => {
-      setSubmissionStatus('success');
-      setFormState({ name: '', email: '', phone: '', serviceType: '', companySize: '', message: '' });
-    })
-    .catch(error => {
-      setSubmissionStatus('error');
-      console.error(error);
-    });
-  };
-
   return (
     <section id="contacto" className="py-20 bg-gray-50">
       <div className="container mx-auto px-6">
@@ -69,6 +47,8 @@ const Contact = () => {
               method="POST" 
               data-netlify="true" 
               data-netlify-honeypot="bot-field"
+              action="/thank-you" // Redirige a una página de agradecimiento
+              onSubmit={() => setSubmissionStatus('submitting')} // Opcional: para mostrar un estado de carga
               className="bg-white p-8 rounded-lg shadow-lg h-full space-y-4"
             >
               <input type="hidden" name="form-name" value="contact-virtus-detailed" />
