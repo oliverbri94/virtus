@@ -18,7 +18,7 @@ export default function Home() {
         <title>Virtus Tech Consulting - Automatización y RPA en Ecuador</title>
       </Head>
       <Navbar />
-      <main className="pt-20">
+      <main>
         <HeroConPlexo />
         <Soluciones />
         <Resultados />
