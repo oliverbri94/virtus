@@ -9,6 +9,7 @@ import BlogSection from '../components/BlogSection';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import DynamicParticles from '../components/DynamicParticles';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Home() {
@@ -18,8 +19,12 @@ export default function Home() {
         <title>Virtus Tech Consulting - Automatización y RPA en Ecuador</title>
       </Head>
       <Navbar />
-      <main className="pt-20">
-        <HeroConPlexo />
+      <main>
+        <div className="relative">
+          <DynamicParticles />
+          <div className="hero-background-container" />
+          <HeroConPlexo />
+        </div>
         <Soluciones />
         <Resultados />
         <Metodologia />

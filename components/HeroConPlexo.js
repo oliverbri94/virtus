@@ -4,14 +4,19 @@ const HeroConPlexo = () => {
   const { t } = useTranslation('common');
 
   return (
-    <section className="relative flex items-center justify-center h-screen text-center text-white overflow-hidden">
-      <div className="relative z-10 p-6">
-        <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-4">
+    <section className="relative flex items-center justify-center h-screen text-center overflow-hidden">
+      <div className="relative z-10 p-6 flex flex-col items-center">
+        <h1 className="text-5xl md:text-7xl font-semibold leading-tight mb-4 text-gray-100" style={{ animation: 'fade-in-up 0.5s 0.2s both' }}>
           {t('hero.title')}
         </h1>
-        <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+        <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto tracking-wide" style={{ animation: 'fade-in-up 0.5s 0.4s both' }}>
           {t('hero.subtitle')}
         </p>
+        <div className="mt-8" style={{ animation: 'fade-in-up 0.5s 0.6s both' }}>
+          <button className="px-8 py-3 font-semibold border border-virtus-blue-light rounded-lg text-virtus-blue-light transition-all duration-300 hover:bg-virtus-blue-light hover:text-gray-900 hover:shadow-lg hover:shadow-virtus-blue-light/20">
+            {t('hero.cta', 'Descubre Cómo')}
+          </button>
+        </div>
       </div>
     </section>
   );

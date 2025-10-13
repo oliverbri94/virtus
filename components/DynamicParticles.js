@@ -18,34 +18,42 @@ const ParticleComponent = () => {
         fpsLimit: 60,
         interactivity: {
           events: {
-            onHover: { enable: true, mode: "repulse" },
+            onHover: { enable: true, mode: "grab" },
             resize: true,
+          },
+          modes: {
+            grab: {
+              distance: 200,
+              links: {
+                opacity: 0.3,
+              },
+            },
           },
         },
         particles: {
-          color: { value: "#ffffff" },
+          color: { value: "#3395FF" },
           links: {
-            color: "#ffffff",
+            color: "#3395FF",
             distance: 150,
             enable: true,
-            opacity: 0.5,
+            opacity: 0.2,
             width: 1,
           },
           move: {
-            direction: "none",
+            direction: "bottom-right",
             enable: true,
-            outModes: { default: "bounce" },
+            outModes: { default: "out" },
             random: false,
-            speed: 2,
+            speed: 1,
             straight: false,
           },
           number: {
             density: { enable: true, area: 800 },
             value: 80,
           },
-          opacity: { value: 0.5 },
+          opacity: { value: 0.4 },
           shape: { type: "circle" },
-          size: { value: { min: 1, max: 5 } },
+          size: { value: { min: 1, max: 3 } },
         },
         detectRetina: true,
       }}
