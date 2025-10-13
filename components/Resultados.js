@@ -1,14 +1,15 @@
 // components/Resultados.js
 import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
 
 const CaseStudy = ({ client, titleKey, challengeKey, solutionKey, resultKey, imageUrl, imageAlt, reverse = false }) => {
   const { t } = useTranslation('common');
 
   return (
     <div className={`flex flex-col md:flex-row items-center gap-12 ${reverse ? 'md:flex-row-reverse' : ''} mb-20`}>
-      {/* Columna de la Imagen: Usamos <img> normal para máxima compatibilidad */}
+      {/* Columna de la Imagen: Usamos <Image> de Next.js para optimización */}
       <div className="md:w-1/2">
-        <img src={imageUrl} alt={imageAlt} className="w-full h-80 object-cover rounded-lg shadow-2xl" />
+        <Image src={imageUrl} alt={imageAlt} width={500} height={320} className="w-full h-auto object-cover rounded-lg shadow-2xl" />
       </div>
 
       {/* Columna del Texto */}
@@ -20,7 +21,7 @@ const CaseStudy = ({ client, titleKey, challengeKey, solutionKey, resultKey, ima
         
         {/* El resultado destacado */}
         <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-          <p className="text-lg font-bold text-blue-800">"{t(resultKey)}"</p>
+          <p className="text-lg font-bold text-blue-800">{t(resultKey)}</p>
         </div>
       </div>
     </div>

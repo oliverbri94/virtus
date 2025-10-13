@@ -1,6 +1,7 @@
 // components/BlogSection.js
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
 
 // Mantenemos la estructura de tus posts, pero ahora usamos las claves de traducción
 const posts = [
@@ -38,8 +39,7 @@ const BlogSection = () => {
                     {posts.map((post) => (
                         <Link key={post.slug} href={`/blog/${post.slug}`} legacyBehavior>
                             <a className="block bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
-                                {/* Usamos <img> normal para evitar errores de build */}
-                                <img className="h-56 w-full object-cover" src={post.imageUrl} alt={t(post.titleKey)} />
+                                <Image width={400} height={224} className="h-56 w-full object-cover" src={post.imageUrl} alt={t(post.titleKey)} />
                                 <div className="p-6">
                                     <h3 className="text-xl font-bold text-gray-800 mb-2">{t(post.titleKey)}</h3>
                                     <p className="text-gray-600 mb-4 text-sm text-justify">{t(post.summaryKey)}</p>
