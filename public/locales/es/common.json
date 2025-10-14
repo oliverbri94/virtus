@@ -31,15 +31,15 @@
     "challengeLabel": "Desafío",
     "solutionLabel": "Solución Virtus",
     "case1": {
-      "title": "Automatización de Guías de Remisión",
+      "title": "Bot de auditoría de guías logísticas",
       "challenge": "La generación manual de guías consumía jornadas enteras, generando cuellos de botella.",
-      "solution": "Desarrollamos un bot de RPA que automatizó por completo el proceso de creación, validación y envío de guías.",
-      "result": "Reducción de 24 horas de trabajo manual por cada lote procesado."
+      "solution": "Desarrollamos un bot de RPA que automatizó por completo el proceso de validación de guías de tres empresas de logística.",
+      "result": "Reducción de 24 horas de trabajo manual al mes y reducción de errores humanos."
     },
     "case2": {
       "title": "E-commerce de Alto Rendimiento",
       "challenge": "La gestión manual del catálogo era ineficiente y la experiencia de compra online podía mejorar.",
-      "solution": "Implementamos una solución de e-commerce a medida, optimizada para una navegación intuitiva y rápida.",
+      "solution": "Implementamos una solución de e-commerce a medida, optimizada para una navegación intuitiva y con opción offline.",
       "result": "Ahorro de 1 hora diaria en gestión de catálogo y una notable mejora en la experiencia del cliente."
     }
   },

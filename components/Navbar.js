@@ -19,6 +19,7 @@ const Navbar = () => {
             <Link href="#soluciones" legacyBehavior><a className="text-gray-800 hover:text-blue-600 transition-colors duration-300">Soluciones</a></Link>
             <Link href="#resultados" legacyBehavior><a className="text-gray-800 hover:text-blue-600 transition-colors duration-300">Resultados</a></Link>
             <Link href="#metodologia" legacyBehavior><a className="text-gray-800 hover:text-blue-600 transition-colors duration-300">Metodología</a></Link>
+            <Link href="/blog" legacyBehavior><a className="text-gray-800 hover:text-blue-600 transition-colors duration-300">Blog</a></Link>
             <Link href="#contacto" legacyBehavior>
               <a className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition-colors duration-300 shadow-lg">
                 Agendar Diagnóstico
@@ -38,6 +39,7 @@ const Navbar = () => {
           <Link href="#soluciones" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Soluciones</a></Link>
           <Link href="#resultados" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Resultados</a></Link>
           <Link href="#metodologia" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Metodología</a></Link>
+          <Link href="/blog" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Blog</a></Link>
           <Link href="#contacto" legacyBehavior><a className="block text-center py-2 text-gray-800 hover:text-blue-600">Agendar Diagnóstico</a></Link>
         </div>
       )}
