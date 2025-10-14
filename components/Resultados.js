@@ -68,7 +68,9 @@ const Resultados = () => {
     <section id="resultados" className="py-12">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-semibold text-gray-100">{t('resultados.title')}</h2>
+          <h2 className="text-4xl font-semibold text-gray-100">
+            <span className="text-virtus-blue-light">Resultados</span> que inspiran confianza
+          </h2>
           <p className="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">
             {t('resultados.subtitle')}
           </p>

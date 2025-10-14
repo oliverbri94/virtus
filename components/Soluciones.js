@@ -23,7 +23,7 @@ const services = [
     icon: ChatBubbleLeftRightIcon,
   },
 ];
-
+ 
 const Soluciones = () => {
   return (
     <section id="soluciones" className="py-12">
