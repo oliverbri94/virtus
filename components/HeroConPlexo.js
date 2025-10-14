@@ -9,7 +9,7 @@ const HeroConPlexo = () => {
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-normal pb-4 mb-4 bg-gradient-to-br from-virtus-blue-light via-white to-virtus-blue bg-clip-text text-transparent" style={{ animation: 'fade-in-up 0.5s 0.2s both', textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
           {t('hero.title')}
         </h1>
-        <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto tracking-wide" style={{ animation: 'fade-in-up 0.5s 0.4s both', textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
+        <p className="break-words text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto tracking-wide" style={{ animation: 'fade-in-up 0.5s 0.4s both', textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
           {t('hero.subtitle')}
         </p>
         <div className="mt-8" style={{ animation: 'fade-in-up 0.5s 0.6s both' }}>
