@@ -14,7 +14,7 @@ const Contact = () => {
   const inputStyles = "block w-full px-4 py-3 rounded-md bg-gray-900/70 border border-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-virtus-blue-light focus:ring-1 focus:ring-virtus-blue-light transition duration-300";
 
   return (
-    <section id="contacto" className="py-20">
+    <section id="contacto" className="py-12">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-semibold text-gray-100">

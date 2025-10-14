@@ -26,7 +26,7 @@ export default function Home() {
       <main>
         <div className="relative">
           <DynamicParticles />
-          <div className="hero-background-container" />
+
           <HeroConPlexo />
         </div>
         <Soluciones />

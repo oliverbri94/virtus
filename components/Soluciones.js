@@ -26,7 +26,7 @@ const services = [
 
 const Soluciones = () => {
   return (
-    <section id="soluciones" className="py-20">
+    <section id="soluciones" className="py-12">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-semibold text-gray-100">
