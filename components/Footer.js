@@ -5,7 +5,7 @@ import Image from 'next/image';
 const Footer = () => {
   // Icono para redes sociales (un componente simple dentro del footer)
   const SocialIcon = ({ href, children }) => (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-virtus-blue transition-colors duration-300">
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:text-virtus-blue transition-colors duration-300">
       {children}
     </a>
   );
@@ -18,7 +18,7 @@ const Footer = () => {
           {/* Columna 1: Logo y Descripción */}
           <div class="md:col-span-2">
             <Image src="/logo.png" alt="Virtus Tech Consulting Logo" width={180} height={40} />
-            <p class="mt-4 text-gray-700 max-w-sm">
+            <p class="mt-4 text-gray-800 max-w-sm">
               Potenciamos la transformación digital con soluciones tecnológicas integrales para líderes de la industria.
             </p>
           </div>
@@ -27,10 +27,10 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Navegación</h4>
             <ul className="space-y-2">
-              <li><Link href="#soluciones" legacyBehavior><a className="text-gray-700 hover:text-virtus-blue">Soluciones</a></Link></li>
-              <li><Link href="#resultados" legacyBehavior><a className="text-gray-700 hover:text-virtus-blue">Resultados</a></Link></li>
-              <li><Link href="#metodologia" legacyBehavior><a className="text-gray-700 hover:text-virtus-blue">Metodología</a></Link></li>
-              <li><Link href="#contacto" legacyBehavior><a className="text-gray-700 hover:text-virtus-blue">Contacto</a></Link></li>
+              <li><Link href="#soluciones" legacyBehavior><a className="text-gray-800 hover:text-virtus-blue">Soluciones</a></Link></li>
+              <li><Link href="#resultados" legacyBehavior><a className="text-gray-800 hover:text-virtus-blue">Resultados</a></Link></li>
+              <li><Link href="#metodologia" legacyBehavior><a className="text-gray-800 hover:text-virtus-blue">Metodología</a></Link></li>
+              <li><Link href="#contacto" legacyBehavior><a className="text-gray-800 hover:text-virtus-blue">Contacto</a></Link></li>
             </ul>
           </div>
 
@@ -46,7 +46,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-gray-300 pt-8 text-center text-gray-600 text-sm">
+        <div className="mt-12 border-t border-gray-300 pt-8 text-center text-gray-800 text-sm">
           <p>&copy; {new Date().getFullYear()} Virtus Tech Consulting. Todos los derechos reservados.</p>
         </div>
       </div>

@@ -9,7 +9,7 @@ const steps = [
     description: 'Analizamos tus procesos e identificamos oportunidades de alto impacto.',
     icon: Search,
     benefits: ['Sin costo inicial', 'Plan cuantificable'],
-    duration: '1-2 semanas'
+    duration: '1 semana'
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const steps = [
     description: 'Implementamos una solución en semanas con resultados tangibles.',
     icon: Rocket,
     benefits: ['Resultados rápidos', 'ROI demostrable'],
-    duration: '3-6 semanas'
+    duration: '1-4 semanas'
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const steps = [
     description: 'Expandimos la automatización y aseguramos optimización continua.',
     icon: TrendingUp,
     benefits: ['Soporte continuo', 'Mejora constante'],
-    duration: 'Semestral o anual'
+    duration: 'Permanente'
   },
 ];
 
