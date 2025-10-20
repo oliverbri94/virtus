@@ -13,7 +13,7 @@ const HeroConPlexo = () => {
           {t('hero.subtitle')}
         </p>
         <div className="mt-8" style={{ animation: 'fade-in-up 0.5s 0.6s both' }}>
-          <a href="#soluciones" className="px-8 py-3 font-semibold border border-virtus-blue-light rounded-lg text-virtus-blue-light transition-all duration-300 hover:bg-virtus-blue-light hover:text-gray-900 hover:shadow-lg hover:shadow-virtus-blue-light/20 no-underline">
+          <a href="#contacto" className="px-8 py-3 font-semibold border border-virtus-blue-light rounded-lg text-virtus-blue-light transition-all duration-300 hover:bg-virtus-blue-light hover:text-gray-900 hover:shadow-lg hover:shadow-virtus-blue-light/20 no-underline">
             {t('hero.cta', 'Descubre Cómo')}
           </a>
         </div>
