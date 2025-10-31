@@ -115,7 +115,7 @@ const CasoDeExitoBotAuditoria = () => {
           <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto mb-12">{t('case_study.video_subtitle')}</p>
           <div className="aspect-w-16 aspect-h-9 max-w-4xl mx-auto">
             <iframe
-              src="https://www.youtube.com/embed/your-video-id"
+              src="https://www.youtube.com/embed/KDdOMFl7BYY"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
