@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useTranslation } from 'next-i18next';
@@ -150,12 +151,13 @@ const CasoDeExitoBotAuditoria = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-100">{t('case_study.cta_title')}</h2>
           <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">{t('case_study.cta_subtitle')}</p>
-          <a
-            href="/#contact"
-            className="mt-8 inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-virtus-blue hover:bg-virtus-blue-dark"
-          >
-            {t('hero.cta')} <ArrowRight className="ml-2 -mr-1 h-5 w-5" />
-          </a>
+          <Link href="/#contact" legacyBehavior>
+            <a
+              className="mt-8 inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-virtus-blue hover:bg-virtus-blue-dark"
+            >
+              {t('hero.cta')} <ArrowRight className="ml-2 -mr-1 h-5 w-5" />
+            </a>
+          </Link>
         </div>
       </section>
 
