@@ -67,5 +67,14 @@
     "or": "O contáctanos directamente",
     "successMessage": "¡Gracias por tu mensaje! Te contactaremos pronto.",
     "errorMessage": "Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo."
-  }
+  },
+  "case_study_title": "Caso de Éxito: Bot de Auditoría de Guías",
+  "case_study_intro": "Este documento proporciona las instrucciones para el uso efectivo del Bot de Auditoría de Guías. La herramienta está diseñada para automatizar el proceso de validación cruzada de manifiestos, facturas y reportes de múltiples proveedores (LAAR, YOBEL, TRAMACO), optimizando tiempos y reduciendo errores operativos.",
+  "case_study_problem_title": "El Desafío",
+  "case_study_problem_desc": "La generación manual de guías consumía jornadas enteras, generando cuellos de botella. La validación cruzada de manifiestos, facturas y reportes de múltiples proveedores era un proceso lento y propenso a errores, lo que resultaba en pérdidas económicas y de tiempo.",
+  "case_study_solution_title": "La Solución de Virtus",
+  "case_study_solution_desc": "Desarrollamos un bot de RPA que automatizó por completo el proceso de validación de guías de tres empresas de logística. El bot identifica y procesa archivos de Excel de diferentes proveedores, realiza una validación cruzada de los datos y genera un informe consolidado con un dashboard gerencial y un detalle completo de cada guía.",
+  "case_study_video_title": "Demostración del Bot en Acción",
+  "case_study_results_title": "Resultados que Inspiran Confianza",
+  "case_study_results_desc": "Reducción de 24 horas de trabajo manual al mes y reducción de errores humanos. El bot identifica alertas de rentabilidad, cobros indebidos de seguro y otras discrepancias, lo que permite a la empresa tomar acciones correctivas de forma inmediata y recuperar pérdidas económicas."
 }

@@ -67,5 +67,14 @@
     "or": "Or contact us directly",
     "successMessage": "Thank you for your message! We will contact you soon.",
     "errorMessage": "There was an error sending the form. Please try again."
-  }
+  },
+  "case_study_title": "Success Story: Guide Auditing Bot",
+  "case_study_intro": "This document provides instructions for the effective use of the Guide Auditing Bot. The tool is designed to automate the process of cross-validating manifests, invoices, and reports from multiple providers (LAAR, YOBEL, TRAMACO), optimizing time and reducing operational errors.",
+  "case_study_problem_title": "The Challenge",
+  "case_study_problem_desc": "The manual generation of guides consumed entire workdays, creating bottlenecks. The cross-validation of manifests, invoices, and reports from multiple providers was a slow and error-prone process, resulting in financial and time losses.",
+  "case_study_solution_title": "The Virtus Solution",
+  "case_study_solution_desc": "We developed an RPA bot that completely automated the guide validation process for three logistics companies. The bot identifies and processes Excel files from different providers, performs a cross-validation of the data, and generates a consolidated report with a management dashboard and a complete detail of each guide.",
+  "case_study_video_title": "Bot Demonstration in Action",
+  "case_study_results_title": "Results That Inspire Confidence",
+  "case_study_results_desc": "Reduction of 24 hours of manual work per month and reduction of human errors. The bot identifies profitability alerts, improper insurance charges, and other discrepancies, allowing the company to take immediate corrective actions and recover financial losses."
 }
