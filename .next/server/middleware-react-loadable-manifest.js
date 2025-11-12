@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"pages\\\\_app.js -> ../components/DynamicParticles\":{\"id\":\"pages\\\\_app.js -> ../components/DynamicParticles\",\"files\":[\"static/chunks/components_DynamicParticles_js.js\"]},\"pages\\\\index.js -> ../components/DynamicParticles\":{\"id\":\"pages\\\\index.js -> ../components/DynamicParticles\",\"files\":[\"static/chunks/components_DynamicParticles_js.js\"]}}"
+self.__REACT_LOADABLE_MANIFEST="{}"
