@@ -22,7 +22,7 @@ const slides = [
   {
     title: 'Inteligencia Artificial Aplicada',
     text: 'Toma decisiones más inteligentes con análisis predictivo y modelos de datos avanzados. La IA es tu mejor aliada.',
-    imageUrl: 'https://images.unsplash.com/photo-1620712943543-2858200e94b1?q=80&w=1964&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1684369175838-32b26458b6a7?q=80&w=2070&auto=format&fit=crop',
   },
   {
     title: 'Optimización de Infraestructura',
