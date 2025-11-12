@@ -22,7 +22,7 @@ const slides = [
   {
     title: 'Inteligencia Artificial Aplicada',
     text: 'Toma decisiones más inteligentes con análisis predictivo y modelos de datos avanzados. La IA es tu mejor aliada.',
-    imageUrl: 'https://images.unsplash.com/photo-1684369175838-32b26458b6a7?q=80&w=2070&auto=format&fit=crop',
+    imageUrl: '/case-study-1.png',
   },
   {
     title: 'Optimización de Infraestructura',
@@ -94,7 +94,7 @@ const SocialPostGenerator = () => {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-end p-6 sm:p-8 md:p-10">
-                      <img src="/logo.png" alt="VIRTUS Logo" className="w-24 md:w-32 mb-4" />
+                      <img src="/logo_black.png" alt="VIRTUS Logo" className="w-24 md:w-32 mb-4" />
                       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
                         {slide.title}
                       </h2>
