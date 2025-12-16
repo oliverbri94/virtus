@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { 
   ArrowRight, 
   ArrowLeft, 
@@ -16,7 +17,10 @@ import {
   FileText,
   Zap,
   Target,
-  ChevronRight
+  ChevronRight,
+  Database,
+  Globe,
+  Lock
 } from 'lucide-react';
 
 // --- Components ---
@@ -26,6 +30,7 @@ const Badge = ({ children, color = "blue" }) => {
     blue: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
     purple: "bg-purple-500/10 text-purple-400 border-purple-500/20",
     green: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    orange: "bg-orange-500/10 text-orange-400 border-orange-500/20",
   };
   return (
     <span className={`px-3 py-1 rounded-full text-xs font-medium border ${colors[color]} uppercase tracking-wider mb-4 inline-block`}>
@@ -98,59 +103,110 @@ const slidesData = [
     ],
     imageAlt: "Consulting strategy"
   },
+  // --- New Individual Service Slides ---
   {
-    id: 'services-core',
-    layout: 'grid',
-    badge: 'Ecosistema de Servicios',
-    title: 'Soluciones para la Eficiencia Integral',
-    cards: [
-      {
-        icon: Bot,
-        title: 'RPA & Automatización',
-        description: 'Fuerza de trabajo digital para tareas repetitivas.',
-        features: ['Conciliaciones bancarias', 'Reportes regulatorios', 'Carga masiva de datos', 'Gestión de correos']
-      },
-      {
-        icon: BarChart3,
-        title: 'Business Intelligence',
-        description: 'Transformamos datos históricos en decisiones futuras.',
-        features: ['Dashboards Gerenciales', 'Análisis de Mora y Colocación', 'Control de Liquidez', 'Limpieza de Datos']
-      },
-      {
-        icon: Smartphone,
-        title: 'Apps & Movilidad',
-        description: 'Digitalización de procesos en campo y ventanilla.',
-        features: ['Vinculación digital', 'Oficina sin papel', 'Geolocalización de asesores', 'Firma electrónica']
-      }
-    ]
+    id: 'service-rpa',
+    layout: 'service-focus',
+    badge: 'Eficiencia Operativa',
+    badgeColor: 'blue',
+    headline: 'Fuerza de trabajo digital 24/7',
+    subheadline: 'Libere a su equipo humano de las tareas repetitivas y monótonas.',
+    title: 'RPA & Automatización',
+    description: 'Implementamos robots de software que imitan la interacción humana con sistemas digitales para ejecutar procesos de negocio a alta velocidad y sin errores.',
+    features: [
+      'Conciliaciones bancarias automáticas',
+      'Generación de reportes regulatorios (SB, SEPS)',
+      'Carga masiva de datos entre sistemas',
+      'Gestión automatizada de correos y archivos'
+    ],
+    icon: Bot
   },
   {
-    id: 'services-financial',
-    layout: 'grid',
-    badge: 'Especialización Financiera',
-    title: 'Potenciando el Core del Negocio',
-    subtitle: 'Soluciones diseñadas específicamente para Cooperativas y Banca.',
-    cards: [
-      {
-        icon: Briefcase,
-        title: 'Cobranza Inteligente',
-        description: 'Optimización del ciclo de recuperación de cartera.',
-        features: ['Segmentación automática de morosidad', 'Recordatorios omnicanal (WhatsApp/SMS)', 'Acuerdos de pago digitales']
-      },
-      {
-        icon: Headphones,
-        title: 'Contact Center 2.0',
-        description: 'Atención al socio escalable y eficiente.',
-        features: ['Enrutamiento inteligente de llamadas', 'Historial unificado del socio', 'Análisis de sentimiento', 'Auto-servicio IVR']
-      },
-      {
-        icon: ShieldCheck,
-        title: 'Riesgo & Compliance',
-        description: 'Seguridad y análisis preventivo.',
-        features: ['Monitoreo transaccional antifraude', 'Validación de identidad biométrica', 'Scoring crediticio alternativo']
-      }
-    ]
+    id: 'service-bi',
+    layout: 'service-focus',
+    badge: 'Inteligencia de Datos',
+    badgeColor: 'purple',
+    headline: 'De datos históricos a decisiones futuras',
+    subheadline: 'Transformamos filas de excel en tableros de control vivos.',
+    title: 'Business Intelligence (BI)',
+    description: 'Centralizamos y visualizamos la información crítica de su cooperativa para que la gerencia pueda tomar decisiones basadas en evidencia en tiempo real.',
+    features: [
+      'Dashboards Gerenciales en tiempo real',
+      'Análisis profundo de Mora y Colocación',
+      'Control y proyección de Liquidez',
+      'Limpieza y estructuración de datos (ETL)'
+    ],
+    icon: BarChart3
   },
+  {
+    id: 'service-apps',
+    layout: 'service-focus',
+    badge: 'Movilidad & Agilidad',
+    badgeColor: 'green',
+    headline: 'Digitalización del "último metro"',
+    subheadline: 'Elimine el papel y la doble digitación en campo y ventanilla.',
+    title: 'Apps & Herramientas Internas',
+    description: 'Desarrollamos aplicaciones a medida para optimizar la captura de información donde realmente sucede la acción: frente al socio.',
+    features: [
+      'Vinculación digital de socios (Onboarding)',
+      'Estrategia de Oficina sin Papel (Paperless)',
+      'Geolocalización de asesores de crédito',
+      'Firma electrónica integrada en procesos'
+    ],
+    icon: Smartphone
+  },
+  {
+    id: 'service-collection',
+    layout: 'service-focus',
+    badge: 'Soluciones Financieras',
+    badgeColor: 'orange',
+    headline: 'Recuperación de cartera inteligente',
+    subheadline: 'Optimice el ciclo de cobranza con tecnología proactiva.',
+    title: 'Cobranza Digital',
+    description: 'Sistemas que automatizan el contacto y la negociación con el socio, aumentando la tasa de recuperación y reduciendo la carga operativa de los gestores.',
+    features: [
+      'Segmentación automática de morosidad',
+      'Recordatorios omnicanal (WhatsApp, SMS, Email)',
+      'Acuerdos de pago digitales',
+      'Gestión preventiva de cartera'
+    ],
+    icon: Briefcase
+  },
+  {
+    id: 'service-contact',
+    layout: 'service-focus',
+    badge: 'Experiencia del Socio',
+    badgeColor: 'blue',
+    headline: 'Atención escalable y personalizada',
+    subheadline: 'Centralice sus canales y responda más rápido a sus socios.',
+    title: 'Contact Center 2.0',
+    description: 'Evolucione su centro de llamadas a un centro de experiencia omnicanal, integrando voz y texto con una visión 360 del socio.',
+    features: [
+      'Enrutamiento inteligente de llamadas',
+      'Historial unificado del socio (CRM)',
+      'Análisis de sentimiento en interacciones',
+      'Auto-servicio mediante IVR avanzado'
+    ],
+    icon: Headphones
+  },
+  {
+    id: 'service-risk',
+    layout: 'service-focus',
+    badge: 'Seguridad & Riesgo',
+    badgeColor: 'purple',
+    headline: 'Blindaje operativo y prevención',
+    subheadline: 'Tecnología para mitigar riesgos antes de que se materialicen.',
+    title: 'Riesgo & Compliance',
+    description: 'Herramientas avanzadas para la detección de fraude y el cumplimiento normativo, protegiendo los activos de la institución y sus socios.',
+    features: [
+      'Monitoreo transaccional antifraude',
+      'Validación de identidad biométrica',
+      'Scoring crediticio alternativo con IA',
+      'Listas de control automatizadas (PLD)'
+    ],
+    icon: ShieldCheck
+  },
+  // --- End Individual Services ---
   {
     id: 'innovation',
     layout: 'feature-highlight',
@@ -240,9 +296,8 @@ export default function VirtusPresentation() {
       
       {/* Top Bar */}
       <div className="fixed top-0 left-0 w-full p-6 z-50 flex justify-between items-center bg-gradient-to-b from-gray-900 to-transparent">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-cyan-500 rounded-md flex items-center justify-center font-bold text-gray-900">V</div>
-          <span className="font-semibold tracking-wide text-gray-200">VIRTUS TECH</span>
+        <div className="flex items-center">
+          <Image src="/logo_black.png" alt="Virtus Tech Consulting Logo" width={180} height={50} />
         </div>
         <div className="text-sm text-gray-500 font-mono hidden sm:block">
           {currentSlide + 1} / {totalSlides}
@@ -336,7 +391,51 @@ export default function VirtusPresentation() {
             </div>
           )}
 
-          {/* Layout: Grid (Cards) */}
+          {/* Layout: Service Focus (New Detailed Single Service) */}
+          {slide.layout === 'service-focus' && (
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="order-2 lg:order-1">
+                 <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 blur-xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="relative bg-gray-800/40 border border-gray-700/50 backdrop-blur-xl rounded-2xl p-8 lg:p-12 hover:border-cyan-500/30 transition-colors duration-500">
+                        <div className="w-16 h-16 rounded-xl bg-gray-900 border border-gray-700 flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <slide.icon className="w-8 h-8 text-cyan-400" />
+                        </div>
+                        <h3 className="text-3xl font-bold text-white mb-4">{slide.title}</h3>
+                         <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+                            {slide.description}
+                        </p>
+                         <div className="grid grid-cols-1 gap-4">
+                            {slide.features.map((feat, idx) => (
+                                <div key={idx} className="flex items-center p-3 rounded-lg bg-gray-900/50 border border-gray-800 group-hover:border-gray-700 transition-colors">
+                                    <CheckCircle2 className="w-5 h-5 text-cyan-500 mr-3 flex-shrink-0" />
+                                    <span className="text-gray-200 font-medium">{feat}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                 </div>
+              </div>
+              <div className="order-1 lg:order-2 text-center lg:text-left">
+                  <Badge color={slide.badgeColor || "blue"}>{slide.badge}</Badge>
+                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                    {slide.headline}
+                  </h2>
+                  <p className="text-xl text-gray-400 leading-relaxed">
+                    {slide.subheadline}
+                  </p>
+                  
+                  {/* Decorative Elements for Context */}
+                  <div className="mt-12 hidden lg:flex gap-4 opacity-50">
+                    <div className="h-2 w-24 bg-gray-700 rounded-full"></div>
+                    <div className="h-2 w-12 bg-gray-700 rounded-full"></div>
+                    <div className="h-2 w-6 bg-gray-700 rounded-full"></div>
+                  </div>
+              </div>
+            </div>
+          )}
+
+          {/* Layout: Grid (Cards) - Kept for fallback/overview if needed */}
           {slide.layout === 'grid' && (
             <div>
               <div className="text-center mb-12">
@@ -456,12 +555,12 @@ export default function VirtusPresentation() {
       <footer className="fixed bottom-0 left-0 w-full p-6 md:p-8 z-50">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
             {/* Progress Bar */}
-            <div className="flex gap-2 mr-8">
+            <div className="flex gap-2 mr-8 overflow-x-auto pb-2 scrollbar-hide">
                 {slidesData.map((_, idx) => (
                     <button
                         key={idx}
                         onClick={() => goToSlide(idx)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                        className={`h-1.5 rounded-full transition-all duration-300 flex-shrink-0 ${
                             idx === currentSlide ? 'w-8 bg-cyan-500' : 'w-4 bg-gray-700 hover:bg-gray-600'
                         }`}
                         aria-label={`Go to slide ${idx + 1}`}
@@ -505,6 +604,13 @@ export default function VirtusPresentation() {
         }
         .animate-fadeIn {
           animation: fadeIn 0.6s ease-out forwards;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
       `}</style>
     </div>
