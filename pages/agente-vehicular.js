@@ -1,45 +1,93 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { Send, Car, DollarSign, AlertTriangle, TrendingUp, TrendingDown, Target, Lightbulb, RefreshCw, BarChart2, MessageSquare, Trash2 } from 'lucide-react';
+import { Car, DollarSign, TrendingDown, TrendingUp, AlertTriangle, BarChart2, Briefcase, Plus, Trash2, Calendar, Tag, FileText } from 'lucide-react';
 
-const INITIAL_MESSAGE = {
-  id: 0,
-  role: 'agent',
-  text: '¡Hola! Soy tu Agente Inteligente de Gestión Vehicular. 🚗\nEstoy aquí para ayudarte a maximizar tu rentabilidad.\n\nPuedes decirme comandos como:\n• *"Hice $25 en Uber"*\n• *"Gasté 15 en gasolina"*\n• *"ver resumen"*\n• *"optimizar negocio"*'
-};
-
-export default function AgenteVehicular() {
-  const [messages, setMessages] = useState([INITIAL_MESSAGE]);
-  const [input, setInput] = useState('');
+export default function PlanificadorVehicular() {
   const [transactions, setTransactions] = useState([]);
   const [isClient, setIsClient] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  // Cargar datos locales
+  // Form State
+  const [tipo, setTipo] = useState('gasto');
+  const [monto, setMonto] = useState('');
+  const [categoria, setCategoria] = useState('gasolina');
+  const [fecha, setFecha] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+
+  const categoriasGasto = ['gasolina', 'multa', 'limpieza', 'peaje', 'mantenimiento', 'seguro', 'comida', 'otros'];
+  const categoriasIngreso = ['uber', 'indrive', 'didi', 'puerta a puerta', 'particular', 'otros'];
+
   useEffect(() => {
-    setIsClient(true);
-    const savedTx = localStorage.getItem('vehicle_transactions');
-    const savedMsgs = localStorage.getItem('vehicle_messages');
-    
-    if (savedTx) setTransactions(JSON.parse(savedTx));
-    if (savedMsgs) {
-      const parsedMsgs = JSON.parse(savedMsgs);
-      setMessages(parsedMsgs.length > 0 ? parsedMsgs : [INITIAL_MESSAGE]);
-    }
+    setFecha(new Date().toISOString().split('T')[0]);
   }, []);
 
-  // Auto-scroll
+  // Cargar datos
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    setIsClient(true);
+    fetch('/api/vehicular-db')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.transactions && data.transactions.length > 0) {
+          // Ordenar las transacciones de más reciente a más antigua
+          const sorted = data.transactions.sort((a, b) => new Date(b.fecha) - new Date(a.fecha) || b.id - a.id);
+          setTransactions(sorted);
+        }
+        setIsDataLoaded(true);
+      })
+      .catch((err) => {
+        console.error('Error cargando BD local:', err);
+        setIsDataLoaded(true);
+      });
+  }, []);
 
   // Guardar datos
   useEffect(() => {
-    if (isClient) {
-      localStorage.setItem('vehicle_transactions', JSON.stringify(transactions));
-      localStorage.setItem('vehicle_messages', JSON.stringify(messages));
+    if (isClient && isDataLoaded) {
+      // Guardamos transactions y un arreglo vacío de messages para no romper la api original
+      fetch('/api/vehicular-db', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transactions, messages: [] })
+      }).catch((err) => console.error('Error guardando en BD:', err));
     }
-  }, [transactions, messages, isClient]);
+  }, [transactions, isClient, isDataLoaded]);
+
+  // Handle Form Submit
+  const handleAddTransaction = (e) => {
+    e.preventDefault();
+    if (!monto || isNaN(monto) || parseFloat(monto) <= 0) {
+      alert("Por favor ingresa un monto válido.");
+      return;
+    }
+
+    const newTx = {
+      id: Date.now().toString(),
+      tipo,
+      monto: parseFloat(monto),
+      categoria,
+      fecha,
+      descripcion: descripcion.trim()
+    };
+
+    setTransactions(prev => [newTx, ...prev]);
+    
+    // Reset campos
+    setMonto('');
+    setDescripcion('');
+    // Mantenemos el tipo y fecha
+  };
+
+  const handleDelete = (id) => {
+    if(window.confirm('¿Seguro de eliminar este registro?')) {
+      setTransactions(prev => prev.filter(t => t.id !== id));
+    }
+  };
+
+  const handleClearAll = () => {
+    if(window.confirm('⚠️ ADVERTENCIA: ¿Borrar ABSOLUTAMENTE TODOS los registros financieros?')) {
+      setTransactions([]);
+    }
+  };
 
   // Cálculos estadísticos
   const totalIngresos = transactions.filter(t => t.tipo === 'ingreso').reduce((acc, t) => acc + t.monto, 0);
@@ -47,358 +95,265 @@ export default function AgenteVehicular() {
   const gananciaNeta = totalIngresos - totalGastos;
   const rentabilidad = totalIngresos > 0 ? ((gananciaNeta / totalIngresos) * 100).toFixed(1) : 0;
 
-  const expensesByCategory = transactions
-    .filter(t => t.tipo === 'gasto')
-    .reduce((acc, t) => {
-      acc[t.categoria] = (acc[t.categoria] || 0) + t.monto;
-      return acc;
-    }, {});
-  
-  const topGasto = Object.entries(expensesByCategory).sort((a, b) => b[1] - a[1])[0] || ['N/A', 0];
+  // Actualizar categoría por default al cambiar el tipo
+  useEffect(() => {
+    if (tipo === 'gasto') setCategoria('gasolina');
+    else setCategoria('uber');
+  }, [tipo]);
 
-  const incomeByCategory = transactions
-    .filter(t => t.tipo === 'ingreso')
-    .reduce((acc, t) => {
-      acc[t.categoria] = (acc[t.categoria] || 0) + t.monto;
-      return acc;
-    }, {});
-    
-  const topIngreso = Object.entries(incomeByCategory).sort((a, b) => b[1] - a[1])[0] || ['N/A', 0];
-
-  // NLP Engine Local (Heurísticas básicas)
-  const processInput = (text) => {
-    const lowerText = text.toLowerCase();
-    
-    // Commands
-    if (lowerText.includes('reiniciar datos')) {
-      return { type: 'command', command: 'reset' };
-    }
-    if (lowerText.includes('resumen') || lowerText.includes('cuanto hice') || lowerText.includes('ganando o perdiendo')) {
-      return { type: 'command', command: 'resume' };
-    }
-    if (lowerText.includes('optimizar') || lowerText.includes('estrategia') || lowerText.includes('mejorar')) {
-      return { type: 'command', command: 'optimize' };
-    }
-
-    // Number extraction
-    const amountMatch = text.match(/\$?\b\d+(\.\d{1,2})?\b/);
-    const monto = amountMatch ? parseFloat(amountMatch[0].replace('$', '')) : null;
-
-    if (!monto) {
-      return { 
-        type: 'error', 
-        msg: 'No pude detectar ningún monto numérico. Por favor intenta así: "Gasté 10 en gasolina".' 
-      };
-    }
-
-    // Intent detection
-    const ingresoWords = ['hice', 'gané', 'generé', 'ingreso', 'carrera', 'viaje', 'entró'];
-    const gastoWords = ['gasté', 'gast', 'pagué', 'costó', 'compré', 'multa', 'tanqueé'];
-    
-    let isIngreso = ingresoWords.some(w => lowerText.includes(w));
-    let isGasto = gastoWords.some(w => lowerText.includes(w));
-    
-    // Category detection
-    const categoriasGasto = ['gasolina', 'multa', 'limpieza', 'lavado', 'peaje', 'mantenimiento', 'seguro', 'comida'];
-    const categoriasIngreso = ['uber', 'indrive', 'didi', 'puerta a puerta', 'calle'];
-    
-    // Plataform intent fallback
-    if (!isIngreso && !isGasto) {
-      if (categoriasIngreso.some(w => lowerText.includes(w))) isIngreso = true;
-      else if (categoriasGasto.some(w => lowerText.includes(w))) isGasto = true;
-      else return { type: 'error', msg: `Detecté el monto $${monto}, pero no sé si es un gasto o una ganancia. ¡Necesito más contexto!` };
-    }
-
-    const transactionType = isGasto ? 'gasto' : 'ingreso';
-    
-    let categoria = 'general';
-    if (transactionType === 'gasto') {
-      const match = categoriasGasto.find(c => lowerText.includes(c));
-      if (match) categoria = match === 'lavado' ? 'limpieza' : match;
-    } else {
-      const match = categoriasIngreso.find(c => lowerText.includes(c));
-      if (match) categoria = match;
-    }
-
-    const newTransaction = {
-      id: Date.now().toString(),
-      tipo: transactionType,
-      categoria: categoria,
-      monto: monto,
-      fecha: new Date().toISOString().split('T')[0],
-      descripcion: text
-    };
-
-    let extraMsg = '';
-    if (transactionType === 'gasto' && categoria === 'gasolina' && monto > 40) {
-        extraMsg = "\n\n⚠️ **Alerta:** Gasto alto en gasolina. Evalúa si las rutas de hoy fueron eficientes.";
-    }
-    if (transactionType === 'gasto' && categoria === 'multa') {
-        extraMsg = "\n\n🛑 Oops. ¡Cuidado con las infracciones! Esto golpea directamente tu rentabilidad neta.";
-    }
-    if (transactionType === 'gasto' && gananciaNeta - monto < 0) {
-        extraMsg = "\n\n⚠️ **Alerta Financiera:** Con este gasto, tus números globales están en negativo.";
-    }
-
-    return { type: 'transaction', newTransaction, msg: `✅ **Registrado:**\n${transactionType === 'ingreso' ? '📈 Ingreso' : '📉 Gasto'} de **$${monto.toFixed(2)}** en la categoría *${categoria}*.${extraMsg}` };
-  };
-
-  const executeCommand = (cmd) => {
-    switch (cmd) {
-      case 'reset':
-        setTransactions([]);
-        setMessages([INITIAL_MESSAGE]);
-        return "Tus datos han sido reiniciados por completo. ¡Empecemos de cero! 🔄";
-      case 'resume':
-        return `📊 **RESUMEN DEL VEHÍCULO**\n\nIngresos Totales: **$${totalIngresos.toFixed(2)}**\nGastos Totales: **$${totalGastos.toFixed(2)}**\nGanancia Neta: **$${gananciaNeta.toFixed(2)}**\nRentabilidad: **${rentabilidad}%**\n\n📍 Mayor ingreso por: *${topIngreso[0]}* ($${topIngreso[1]})\n🚨 Mayor gasto en: *${topGasto[0]}* ($${topGasto[1]})`;
-      case 'optimize':
-        const ratioGasolina = (expensesByCategory['gasolina'] || 0) / (totalIngresos || 1);
-        
-        let estrategias = "🧠 **DIAGNÓSTICO ESTRATÉGICO**\n\n";
-        
-        if (gananciaNeta < 0) estrategias += "🔴 **ESTADO CRÍTICO:** Actualmente estás operando a pérdida. \n\n";
-        else if (rentabilidad < 30) estrategias += "🟡 **ESTADO REGULAR:** El margen de ganancia es muy delgado.\n\n";
-        else estrategias += "🟢 **ESTADO SALUDABLE:** Tienes buena rentabilidad, pero siempre se puede mejorar.\n\n";
-
-        estrategias += "**Tus 3 Acciones de Mejora:**\n\n";
-        
-        if (ratioGasolina > 0.3) {
-          estrategias += "1. ⛽ **Control de Combustible:** Estás gastando más del 30% en gasolina. Evita deambular sin pasajeros. Acércate a zonas de alta demanda y apaga el motor si estás parqueado.\n";
-        } else {
-          estrategias += `1. 📈 **Maximiza tu fuerte:** Tu mejor canal es *${topIngreso[0]}*. Dedícale más horas en franjas pico (7am-9am / 5pm-8pm).\n`;
-        }
-
-        if (totalGastos > 0) {
-          estrategias += `2. ✂️ **Recorte de Gasto:** *${topGasto[0]}* es tu mayor fuga de dinero. Busca alternativas más económicas o reduce la frecuencia semanal.\n`;
-        }
-        
-        estrategias += "3. 🎯 **Ruta Estratégica:** En viajes particulares ('puerta a puerta'), cobra un pequeño recargo durante horas de tráfico pesado para compensar el tiempo muerto.";
-
-        return estrategias;
-      default:
-        return "No estoy seguro de cómo procesar ese comando.";
-    }
-  };
-
-  const handleSend = (e) => {
-    e?.preventDefault();
-    if (!input.trim()) return;
-
-    const userText = input.trim();
-    const newMsgId = Date.now();
-    
-    // Añadimos mensaje de usuario
-    setMessages(prev => [...prev, { id: newMsgId, role: 'user', text: userText }]);
-    setInput('');
-    
-    // Procesamos
-    setTimeout(() => {
-      const parsed = processInput(userText);
-      let agentReply = '';
-
-      if (parsed.type === 'error') {
-        agentReply = parsed.msg;
-      } else if (parsed.type === 'command') {
-        agentReply = executeCommand(parsed.command);
-      } else if (parsed.type === 'transaction') {
-        setTransactions(prev => [...prev, parsed.newTransaction]);
-        agentReply = parsed.msg;
-      }
-
-      setMessages(prev => [...prev, { id: newMsgId + 1, role: 'agent', text: agentReply }]);
-    }, 500); // Simulamos un leve delay
-  };
-
-  if (!isClient) return null; // Evitar hidratación mismatch en SSR
+  if (!isClient) return null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500/30 flex justify-center">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500/30 p-4 sm:p-8">
       <Head>
-        <title>Agente Vehicular | Virtus</title>
+        <title>Planificador Financiero | Virtus</title>
       </Head>
 
-      <div className="w-full max-w-7xl flex flex-col lg:flex-row h-screen">
+      <div className="max-w-7xl mx-auto space-y-8">
         
-        {/* PANEL IZQUIERDO: Dashboard */}
-        <aside className="w-full lg:w-1/3 bg-slate-900/50 border-r border-slate-800 p-6 overflow-y-auto flex flex-col gap-6 hide-scrollbar shadow-2xl z-10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="bg-cyan-500/10 p-3 rounded-2xl ring-1 ring-cyan-500/30">
-              <Car className="w-7 h-7 text-cyan-400" />
+        {/* HEADER */}
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-indigo-500/10 p-4 rounded-2xl ring-1 ring-indigo-500/30">
+              <Briefcase className="w-8 h-8 text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">FleetAgent Pro</h1>
-              <p className="text-xs text-slate-400 font-medium">Asistente Operativo</p>
+              <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400 tracking-tight">Planificador Operativo</h1>
+              <p className="text-sm text-slate-400 font-medium mt-1">Gestión Financiera de Vehículos</p>
             </div>
           </div>
+        </header>
 
-          <div className="grid grid-cols-2 gap-4">
-            {/* Ingresos Unit */}
-            <div className="bg-slate-800/40 p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/30 transition-colors">
-              <div className="flex items-center gap-2 text-emerald-400 mb-2">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider">Ingresos</span>
-              </div>
-              <p className="text-2xl font-bold">${totalIngresos.toFixed(2)}</p>
-            </div>
-            
-            {/* Gastos Unit */}
-            <div className="bg-slate-800/40 p-4 rounded-2xl border border-slate-800/80 hover:border-rose-500/30 transition-colors">
-              <div className="flex items-center gap-2 text-rose-400 mb-2">
-                <TrendingDown className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider">Gastos</span>
-              </div>
-              <p className="text-2xl font-bold">${totalGastos.toFixed(2)}</p>
-            </div>
+        {/* TOP STATS CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-4 opacity-5 bg-gradient-to-br from-emerald-500 to-transparent w-32 h-32 rounded-bl-full" />
+             <div className="flex items-center gap-3 text-emerald-400 mb-4 z-10">
+                <TrendingUp className="w-5 h-5" />
+                <span className="text-sm font-semibold uppercase tracking-wider">Total Ingresos</span>
+             </div>
+             <p className="text-4xl font-bold text-white z-10">${totalIngresos.toFixed(2)}</p>
           </div>
-
-          {/* Tarjeta Ganancia */}
-          <div className={`p-5 rounded-2xl border ${gananciaNeta >= 0 ? 'bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border-emerald-500/20' : 'bg-gradient-to-br from-rose-500/10 to-red-500/5 border-rose-500/20'}`}>
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-slate-300">Ganancia Neta</span>
-              <span className={`text-xs font-bold px-2 py-1 rounded-full ${gananciaNeta >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
-                {rentabilidad}% ROI
-              </span>
-            </div>
-            <p className={`text-4xl font-extrabold tracking-tight ${gananciaNeta >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-              ${gananciaNeta.toFixed(2)}
-            </p>
-          </div>
-
-          {/* Quick Stats */}
-          <div className="mt-2 space-y-4">
-            <h3 className="text-sm font-semibold tracking-wide text-slate-500 uppercase flex items-center gap-2">
-              <BarChart2 className="w-4 h-4" /> Indicadores
-            </h3>
-            
-            <div className="bg-slate-800/30 p-4 rounded-2xl border border-slate-800 text-sm flex items-start gap-3">
-              <Target className="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" />
-              <div>
-                <p className="text-indigo-300 font-medium mb-1">Mejor Ingreso</p>
-                <p className="text-slate-300 capitalize">{topIngreso[0] === 'N/A' ? 'Aún sin datos' : `${topIngreso[0]} ($${topIngreso[1]}`}</p>
-              </div>
-            </div>
-
-            <div className="bg-slate-800/30 p-4 rounded-2xl border border-slate-800 text-sm flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
-              <div>
-                <p className="text-amber-300 font-medium mb-1">Mayor Gasto</p>
-                <p className="text-slate-300 capitalize">{topGasto[0] === 'N/A' ? 'Aún sin datos' : `${topGasto[0]} ($${topGasto[1]})`}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-auto pt-6 pb-2">
-            <button 
-              onClick={() => {if(window.confirm('¿Borrar todo el historial?')) executeCommand('reset')}}
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent hover:border-slate-700 transition-all duration-200"
-            >
-              <Trash2 className="w-4 h-4" /> Resetear Datos Locales
-            </button>
-          </div>
-        </aside>
-
-        {/* PANEL DERECHO: Chat Interface */}
-        <main className="flex-1 flex flex-col h-full bg-slate-950 relative">
           
-          {/* Decorative background gradients */}
-          <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-cyan-900/10 to-transparent pointer-events-none" />
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-4 opacity-5 bg-gradient-to-br from-rose-500 to-transparent w-32 h-32 rounded-bl-full" />
+             <div className="flex items-center gap-3 text-rose-400 mb-4 z-10">
+                <TrendingDown className="w-5 h-5" />
+                <span className="text-sm font-semibold uppercase tracking-wider">Total Gastos</span>
+             </div>
+             <p className="text-4xl font-bold text-white z-10">${totalGastos.toFixed(2)}</p>
+          </div>
 
-          {/* Header Mobile / Tablas */}
-          <header className="px-6 py-4 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md flex items-center justify-between z-10 sticky top-0">
-            <div className="flex items-center gap-3">
-              <MessageSquare className="w-5 h-5 text-slate-400" />
-              <h2 className="font-semibold text-slate-200">Asistente Virtual</h2>
-            </div>
-            {transactions.length > 0 && (
-              <span className="text-xs font-medium bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700">
-                {transactions.length} registros
-              </span>
-            )}
-          </header>
+          <div className={`p-6 rounded-3xl border shadow-xl flex flex-col relative overflow-hidden ${gananciaNeta >= 0 ? 'bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border-emerald-500/30' : 'bg-gradient-to-br from-rose-500/10 to-red-500/5 border-rose-500/30'}`}>
+             <div className="flex justify-between items-start mb-4 z-10">
+                <span className="text-sm font-semibold uppercase tracking-wider text-slate-300">Ganancia Neta</span>
+                <span className={`text-xs font-bold px-3 py-1.5 rounded-full shadow-sm ${gananciaNeta >= 0 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}`}>
+                  ROI: {rentabilidad}%
+                </span>
+             </div>
+             <p className={`text-5xl font-extrabold tracking-tight z-10 ${gananciaNeta >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                ${gananciaNeta.toFixed(2)}
+             </p>
+          </div>
+        </div>
 
-          {/* Area Mensajes */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 z-10 hide-scrollbar">
-            {messages.map((msg) => {
-              const isAgent = msg.role === 'agent';
-              return (
-                <div key={msg.id} className={`flex w-full ${isAgent ? 'justify-start' : 'justify-end'}`}>
-                  <div className={`flex gap-3 max-w-[85%] md:max-w-[75%] ${isAgent ? 'flex-row' : 'flex-row-reverse'}`}>
-                    
-                    {/* Avatar */}
-                    <div className="shrink-0 pt-1">
-                      {isAgent ? (
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                          <Car className="w-4 h-4 text-white" />
-                        </div>
-                      ) : (
-                        <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                          <span className="text-xs text-slate-400 font-bold">TÚ</span>
-                        </div>
-                      )}
+        {/* MAIN SPLIT VIEW */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* LADO IZQUIERDO: FORMULARIO */}
+          <aside className="lg:col-span-1 space-y-6">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl sticky top-6">
+              <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                <Plus className="w-5 h-5 text-indigo-400" /> Nuevo Registro
+              </h2>
+
+              <form onSubmit={handleAddTransaction} className="space-y-5">
+                
+                {/* Tipo de transacción */}
+                <div className="p-1.5 bg-slate-950 rounded-xl flex gap-1 border border-slate-800 shadow-inner">
+                  <button
+                    type="button"
+                    onClick={() => setTipo('gasto')}
+                    className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${tipo === 'gasto' ? 'bg-rose-500/20 text-rose-400 shadow-sm' : 'text-slate-400 hover:bg-slate-800'}`}
+                  >
+                    📉 Registrar Gasto
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTipo('ingreso')}
+                    className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${tipo === 'ingreso' ? 'bg-emerald-500/20 text-emerald-400 shadow-sm' : 'text-slate-400 hover:bg-slate-800'}`}
+                  >
+                    📈 Registrar Ingreso
+                  </button>
+                </div>
+
+                {/* Monto */}
+                <div>
+                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" /> Monto
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <span className="text-slate-500 font-bold">$</span>
                     </div>
-
-                    {/* Burbuja Texto */}
-                    <div className={`p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap shadow-sm
-                      ${isAgent 
-                        ? 'bg-slate-900 border border-slate-800 text-slate-300' 
-                        : 'bg-cyan-600/20 border border-cyan-500/30 text-cyan-50 font-medium'
-                      }`}
-                    >
-                      {/* Regex simple para renderizar "negritas" tipo markdown si el bot lo retorna */}
-                      {msg.text.split(/(\*\*.*?\*\*|\*.*?\*)/g).map((part, i) => {
-                        if (part.startsWith('**') && part.endsWith('**')) return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
-                        if (part.startsWith('*') && part.endsWith('*')) return <em key={i} className="text-cyan-200 not-italic font-semibold">{part.slice(1, -1)}</em>;
-                        return part;
-                      })}
-                    </div>
-
+                    <input 
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      required
+                      value={monto}
+                      onChange={e => setMonto(e.target.value)}
+                      placeholder="0.00"
+                      className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all font-semibold text-lg"
+                    />
                   </div>
                 </div>
-              );
-            })}
-            <div ref={messagesEndRef} />
-          </div>
 
-          {/* Input Area */}
-          <div className="p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md border-t border-slate-800 z-10 sticky bottom-0">
-            {/* Sugerencias Rápidas */}
-            <div className="flex gap-2 mb-3 overflow-x-auto hide-scrollbar pb-1">
-              {['Gasté $20 en gasolina', 'Hice $40 en indrive', 'Ver resumen', 'Optimizar negocio'].map((chip) => (
+                {/* Categoría y Fecha (Fila Dual) */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                      <Tag className="w-4 h-4" /> Tipo / Rubro
+                    </label>
+                    <select 
+                      value={categoria}
+                      onChange={e => setCategoria(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none capitalize shadow-sm text-sm"
+                    >
+                      {(tipo === 'gasto' ? categoriasGasto : categoriasIngreso).map(c => (
+                        <option key={c} value={c} className="capitalize">{c}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                      <Calendar className="w-4 h-4" /> Fecha
+                    </label>
+                    <input 
+                      type="date"
+                      required
+                      value={fecha}
+                      onChange={e => setFecha(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm text-sm [color-scheme:dark]"
+                    />
+                  </div>
+                </div>
+
+                {/* Nota / Descripción */}
+                <div>
+                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <FileText className="w-4 h-4" /> Nota Descripción
+                  </label>
+                  <input 
+                    type="text"
+                    value={descripcion}
+                    onChange={e => setDescripcion(e.target.value)}
+                    placeholder="Ej. Cambio de llantas traseras..."
+                    className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm text-sm"
+                  />
+                </div>
+
                 <button 
-                  key={chip}
-                  onClick={() => setInput(chip.toLowerCase())}
-                  className="whitespace-nowrap px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors border border-slate-700 text-xs font-medium text-slate-300"
+                  type="submit"
+                  className={`w-full py-4 mt-2 rounded-xl font-bold flex items-center justify-center gap-2 shadow-xl transition-transform active:scale-[0.98]
+                    ${tipo === 'ingreso' ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/20' : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-900/20'}`}
                 >
-                  {chip}
+                  <Plus className="w-5 h-5" /> Guardar Registro
                 </button>
-              ))}
+              </form>
             </div>
+            
+            {/* Análisis Breve */}
+            {totalGastos > totalIngresos * 0.7 && totalIngresos > 0 && (
+              <div className="bg-amber-500/10 border border-amber-500/20 p-5 rounded-3xl flex items-start gap-4">
+                <AlertTriangle className="w-6 h-6 text-amber-400 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-amber-400 font-bold mb-1">¡Alerta de Gastos!</h4>
+                  <p className="text-amber-200/70 text-sm leading-relaxed">Tus gastos representan más del 70% de tus ingresos. Revisa la categoría en la que más gastas y busca eficiencias logísticas urgentes.</p>
+                </div>
+              </div>
+            )}
+          </aside>
 
-            <form onSubmit={handleSend} className="relative flex items-center">
-              <input 
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ej. 'Pagué 10 en multa hoy' o 'Ganancia 30 en uber'..."
-                className="w-full bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 rounded-2xl pl-5 pr-14 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 shadow-inner transition-all sm:text-sm"
-              />
-              <button 
-                type="submit" 
-                disabled={!input.trim()}
-                className="absolute right-2 p-2.5 bg-cyan-600 hover:bg-cyan-500 rounded-xl text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-cyan-500/20 group"
-              >
-                <Send className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </button>
-            </form>
-          </div>
+          {/* LADO DERECHO: HISTORIAL DE TRANSACCIONES */}
+          <main className="lg:col-span-2 space-y-6">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl flex flex-col h-full min-h-[600px]">
+              
+              <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                   <BarChart2 className="w-5 h-5 text-cyan-400" /> Historial de Movimientos
+                </h3>
+                <button
+                  onClick={handleClearAll}
+                  className="text-xs font-medium text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 px-3 py-1.5 rounded-lg transition-colors border border-rose-500/20 flex items-center gap-1.5"
+                >
+                  <Trash2 className="w-3.5 h-3.5" /> Limpiar Todo
+                </button>
+              </div>
 
-        </main>
+              <div className="flex-1 overflow-y-auto p-2 hide-scrollbar">
+                {transactions.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center text-slate-500 p-8 text-center space-y-4">
+                    <div className="p-6 bg-slate-950 rounded-full border border-slate-800">
+                      <Car className="w-10 h-10 text-slate-700" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-400">Sin Movimientos</p>
+                      <p className="text-sm">Tus registros financieros aparecerán aquí.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2 p-4">
+                    {transactions.map((tx) => (
+                      <div key={tx.id} className="flex items-center justify-between p-4 bg-slate-950/50 border border-slate-800/80 rounded-2xl hover:bg-slate-800 transition-colors group">
+                        
+                        <div className="flex items-center gap-4">
+                          <div className={`p-3 rounded-xl border ${tx.tipo === 'ingreso' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'}`}>
+                            {tx.tipo === 'ingreso' ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+                          </div>
+                          
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-bold text-slate-200 capitalize text-sm md:text-base">{tx.categoria}</span>
+                              <span className="text-[10px] md:text-xs text-slate-500 bg-slate-900 px-2.5 py-0.5 rounded-md border border-slate-800 font-mono">
+                                {tx.fecha}
+                              </span>
+                            </div>
+                            {tx.descripcion && (
+                              <p className="text-xs text-slate-400 font-medium truncate max-w-[200px] sm:max-w-xs">{tx.descripcion}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                          <span className={`font-bold text-lg ${tx.tipo === 'ingreso' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                            {tx.tipo === 'ingreso' ? '+' : '-'}${tx.monto.toFixed(2)}
+                          </span>
+                          <button 
+                            onClick={() => handleDelete(tx.id)}
+                            className="p-2 text-slate-500 hover:text-rose-400 hover:bg-slate-900 rounded-lg opacity-0 group-hover:opacity-100 transition-all border border-transparent hover:border-slate-800"
+                            title="Eliminar Registro"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                        
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+          </main>
+
+        </div>
       </div>
       
-      {/* Añadir clase CSS para esconder scrollbars globalmente sólo para este archivo */}
       <style dangerouslySetInnerHTML={{__html: `
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; }
       `}} />
     </div>
   );
