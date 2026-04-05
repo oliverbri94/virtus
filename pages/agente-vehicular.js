@@ -32,25 +32,23 @@ export default function PlanificadorVehicular() {
           const sorted = data.transactions.sort((a, b) => new Date(b.fecha) - new Date(a.fecha) || b.id - a.id);
           setTransactions(sorted);
         }
-        setIsDataLoaded(true);
       })
       .catch((err) => {
         console.error('Error cargando BD local:', err);
-        setIsDataLoaded(true);
       });
   }, []);
 
-  // Guardar datos
-  useEffect(() => {
-    if (isClient && isDataLoaded) {
-      // Guardamos transactions y un arreglo vacío de messages para no romper la api original
-      fetch('/api/vehicular-db', {
+  const saveToDB = async (updatedTransactions) => {
+    try {
+      await fetch('/api/vehicular-db', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transactions, messages: [] })
-      }).catch((err) => console.error('Error guardando en BD:', err));
+        body: JSON.stringify({ transactions: updatedTransactions, messages: [] })
+      });
+    } catch (error) {
+      console.error('Error guardando en BD:', error);
     }
-  }, [transactions, isClient, isDataLoaded]);
+  };
 
   // Handle Form Submit
   const handleAddTransaction = (e) => {
@@ -69,7 +67,9 @@ export default function PlanificadorVehicular() {
       descripcion: descripcion.trim()
     };
 
-    setTransactions(prev => [newTx, ...prev]);
+    const updatedTransactions = [newTx, ...transactions];
+    setTransactions(updatedTransactions);
+    saveToDB(updatedTransactions);
     
     // Reset campos
     setMonto('');
@@ -79,13 +79,16 @@ export default function PlanificadorVehicular() {
 
   const handleDelete = (id) => {
     if(window.confirm('¿Seguro de eliminar este registro?')) {
-      setTransactions(prev => prev.filter(t => t.id !== id));
+      const updatedTransactions = transactions.filter(t => t.id !== id);
+      setTransactions(updatedTransactions);
+      saveToDB(updatedTransactions);
     }
   };
 
   const handleClearAll = () => {
     if(window.confirm('⚠️ ADVERTENCIA: ¿Borrar ABSOLUTAMENTE TODOS los registros financieros?')) {
       setTransactions([]);
+      saveToDB([]);
     }
   };
 
