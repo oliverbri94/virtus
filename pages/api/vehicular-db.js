@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { db } from '../../lib/firebase';
+import { db, isDummyConfig } from '../../lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Define the path to our local JSON database file (Fallback)
@@ -17,22 +17,26 @@ const initializeDB = () => {
 export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
-      if (db) {
-        // Firebase Firestore
-        const docRef = doc(db, 'vehicular', 'data');
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          return res.status(200).json(docSnap.data());
-        } else {
-          return res.status(200).json({ transactions: [], messages: [] });
+      if (db && !isDummyConfig) {
+        try {
+          const docRef = doc(db, 'vehicular', 'data');
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            return res.status(200).json(docSnap.data());
+          } else {
+            return res.status(200).json({ transactions: [], messages: [] });
+          }
+        } catch (e) {
+          console.error("Error leyendo Firebase. Usando JSON local. Detalle:", e.message);
+          // Continua abajo para usar JSON
         }
-      } else {
-        // Local JSON Fallback
-        initializeDB();
-        const fileData = fs.readFileSync(dbFilePath, 'utf8');
-        const data = JSON.parse(fileData);
-        return res.status(200).json(data);
       }
+
+      // Local JSON Fallback
+      initializeDB();
+      const fileData = fs.readFileSync(dbFilePath, 'utf8');
+      const data = JSON.parse(fileData);
+      return res.status(200).json(data);
     } 
     
     if (req.method === 'POST') {
@@ -42,17 +46,21 @@ export default async function handler(req, res) {
         messages: messages || []
       };
 
-      if (db) {
-        // Escribir en Firebase Firestore
-        const docRef = doc(db, 'vehicular', 'data');
-        await setDoc(docRef, newData);
-        return res.status(200).json({ success: true, message: 'Datos guardados en Firebase Firestore.' });
-      } else {
-        // Escribir en base de datos local
-        initializeDB();
-        fs.writeFileSync(dbFilePath, JSON.stringify(newData, null, 2), 'utf8');
-        return res.status(200).json({ success: true, message: 'Datos guardados en JSON local.' });
+      if (db && !isDummyConfig) {
+        try {
+          const docRef = doc(db, 'vehicular', 'data');
+          await setDoc(docRef, newData);
+          return res.status(200).json({ success: true, message: 'Datos guardados en Firebase Firestore.' });
+        } catch (e) {
+          console.error("Error guardando en Firebase. Guardando en JSON local. Detalle:", e.message);
+          // Continua abajo para usar JSON
+        }
       }
+
+      // Escribir en base de datos local
+      initializeDB();
+      fs.writeFileSync(dbFilePath, JSON.stringify(newData, null, 2), 'utf8');
+      return res.status(200).json({ success: true, message: 'Datos guardados en JSON local.' });
     }
 
     // Método no soportado
