@@ -1,14 +1,23 @@
 {
   "pages\\_app.js -> ../components/DynamicParticles": {
-    "id": "pages\\_app.js -> ../components/DynamicParticles",
+    "id": 9624,
     "files": [
-      "static/chunks/components_DynamicParticles_js.js"
+      "static/chunks/737.f6b570f7b569315b.js",
+      "static/chunks/624.3033d9aab145bb2e.js"
+    ]
+  },
+  "pages\\blog\\index.js -> ../../components/DynamicParticles": {
+    "id": 9624,
+    "files": [
+      "static/chunks/737.f6b570f7b569315b.js",
+      "static/chunks/624.3033d9aab145bb2e.js"
     ]
   },
   "pages\\index.js -> ../components/DynamicParticles": {
-    "id": "pages\\index.js -> ../components/DynamicParticles",
+    "id": 9624,
     "files": [
-      "static/chunks/components_DynamicParticles_js.js"
+      "static/chunks/737.f6b570f7b569315b.js",
+      "static/chunks/624.3033d9aab145bb2e.js"
     ]
   }
 }

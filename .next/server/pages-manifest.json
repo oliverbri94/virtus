@@ -1,6 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/": "pages/index.js"
-}
+{"/_app":"pages/_app.js","/api/vehicular-db":"pages/api/vehicular-db.js","/_error":"pages/_error.js","/_document":"pages/_document.js","/caso-de-exito-bot-auditoria":"pages/caso-de-exito-bot-auditoria.js","/blog":"pages/blog.js","/":"pages/index.js","/en/404":"pages/en/404.html","/es/404":"pages/es/404.html","/en/500":"pages/en/500.html","/es/500":"pages/es/500.html","/en/presentacion":"pages/en/presentacion.html","/es/presentacion":"pages/es/presentacion.html","/en/blog/[slug]":"pages/en/blog/[slug].html","/es/blog/[slug]":"pages/es/blog/[slug].html","/en/generador-post":"pages/en/generador-post.html","/es/generador-post":"pages/es/generador-post.html","/en/agente-vehicular":"pages/en/agente-vehicular.html","/es/agente-vehicular":"pages/es/agente-vehicular.html"}
