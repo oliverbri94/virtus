@@ -14,7 +14,7 @@ export default function PlanificadorVehicular() {
   const [fecha, setFecha] = useState('');
   const [descripcion, setDescripcion] = useState('');
 
-  const categoriasGasto = ['gasolina', 'multa', 'limpieza', 'peaje', 'mantenimiento', 'seguro', 'comida', 'otros'];
+  const categoriasGasto = ['gasolina', 'multa', 'limpieza', 'peaje', 'mantenimiento', 'seguro', 'comida', 'salario chofer', 'otros'];
   const categoriasIngreso = ['uber', 'indrive', 'didi', 'puerta a puerta', 'particular', 'otros'];
 
   useEffect(() => {
