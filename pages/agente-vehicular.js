@@ -120,8 +120,8 @@ export default function PlanificadorVehicular() {
   const kmsPersonal = filteredTransactions.filter(t => t.tipo === 'kilometraje' && t.categoria === 'personal').reduce((acc, t) => acc + t.monto, 0);
   const totalKms = kmsTrabajo + kmsPersonal;
   
-  const ingresoPorKm = kmsTrabajo > 0 ? (totalIngresos / kmsTrabajo).toFixed(2) : 0;
-  const gastoPorKm = totalKms > 0 ? (totalGastos / totalKms).toFixed(2) : 0;
+  const ingresoPor100Km = kmsTrabajo > 0 ? ((totalIngresos / kmsTrabajo) * 100).toFixed(2) : 0;
+  const gastoPor100Km = totalKms > 0 ? ((totalGastos / totalKms) * 100).toFixed(2) : 0;
 
   // Para Pie Chart (Distribución de Gastos)
   const gastosPorRubro = useMemo(() => {
@@ -342,9 +342,9 @@ export default function PlanificadorVehicular() {
                  <Target className="w-5 h-5" />
                </div>
                <div>
-                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ingreso por KM</p>
+                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ingreso / 100 KM</p>
                  <p className="flex items-baseline gap-1 text-xl font-bold text-white relative group">
-                    ${ingresoPorKm}
+                    ${ingresoPor100Km}
                     <span className="text-[8px] absolute -bottom-3 left-0 text-slate-500 w-max opacity-0 group-hover:opacity-100 transition-opacity">Considera solo KM de trabajo</span>
                  </p>
                </div>
@@ -357,9 +357,9 @@ export default function PlanificadorVehicular() {
                  <AlertTriangle className="w-5 h-5" />
                </div>
                <div>
-                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Gasto (Coste) por KM</p>
+                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Gasto / 100 KM</p>
                  <p className="flex items-baseline gap-1 text-xl font-bold text-white relative group">
-                    ${gastoPorKm}
+                    ${gastoPor100Km}
                     <span className="text-[8px] absolute -bottom-3 left-0 text-slate-500 w-max opacity-0 group-hover:opacity-100 transition-opacity">Divide Mantenimientos sobre KMs Totales</span>
                  </p>
                </div>
