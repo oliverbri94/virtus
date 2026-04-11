@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Head from 'next/head';
 import { ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Car, DollarSign, TrendingDown, TrendingUp, AlertTriangle, BarChart2, Briefcase, Plus, Trash2, Calendar, Tag, FileText, Filter, PieChart as PieChartIcon, Activity, LineChart as LineChartIcon, MapPin, Target } from 'lucide-react';
+import { Car, DollarSign, TrendingDown, TrendingUp, AlertTriangle, BarChart2, Briefcase, Plus, Trash2, Calendar, Tag, FileText, Filter, PieChart as PieChartIcon, Activity, LineChart as LineChartIcon, MapPin, Target, Download, Zap } from 'lucide-react';
 
 export default function PlanificadorVehicular() {
   const [transactions, setTransactions] = useState([]);
   const [isClient, setIsClient] = useState(false);
+  const montoRef = useRef(null);
+  const skipCategoryReset = useRef(false);
 
   // Form State
   const [tipo, setTipo] = useState('gasto'); // 'gasto', 'ingreso', 'kilometraje'
@@ -178,10 +180,75 @@ export default function PlanificadorVehicular() {
 
   // Actualizar categoría por default al cambiar el tipo en Formulario
   useEffect(() => {
+    if (skipCategoryReset.current) { skipCategoryReset.current = false; return; }
     if (tipo === 'gasto') setCategoria('gasolina');
     else if (tipo === 'ingreso') setCategoria('uber');
     else setCategoria('trabajo');
   }, [tipo]);
+
+  // Quick Actions Config
+  const quickActions = [
+    { emoji: '⛽', label: 'Tanqueé', tipo: 'gasto', categoria: 'gasolina' },
+    { emoji: '🛣️', label: 'Peaje', tipo: 'gasto', categoria: 'peaje' },
+    { emoji: '🍔', label: 'Comida', tipo: 'gasto', categoria: 'comida' },
+    { emoji: '🚗', label: 'Uber', tipo: 'ingreso', categoria: 'uber' },
+    { emoji: '📱', label: 'InDrive', tipo: 'ingreso', categoria: 'indrive' },
+    { emoji: '🚕', label: 'Didi', tipo: 'ingreso', categoria: 'didi' },
+  ];
+
+  const handleQuickAction = (action) => {
+    skipCategoryReset.current = true;
+    setTipo(action.tipo);
+    setCategoria(action.categoria);
+    setMonto('');
+    setTimeout(() => montoRef.current?.focus(), 50);
+  };
+
+  // Heatmap Data (always last 5 weeks, uses ALL transactions)
+  const heatmapData = useMemo(() => {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const dow = today.getDay();
+    const mondayOffset = dow === 0 ? -6 : 1 - dow;
+    const currentMonday = new Date(today); currentMonday.setDate(today.getDate() + mondayOffset);
+    const startDate = new Date(currentMonday); startDate.setDate(startDate.getDate() - 28);
+    const todayStr = today.toISOString().split('T')[0];
+
+    const cells = [];
+    for (let i = 0; i < 35; i++) {
+      const d = new Date(startDate); d.setDate(startDate.getDate() + i);
+      const dateStr = d.toISOString().split('T')[0];
+      const dayTxs = transactions.filter(t => t.fecha === dateStr);
+      const income = dayTxs.filter(t => t.tipo === 'ingreso').reduce((a, t) => a + t.monto, 0);
+      const expense = dayTxs.filter(t => t.tipo === 'gasto').reduce((a, t) => a + t.monto, 0);
+      const net = income - expense;
+      const hasData = dayTxs.some(t => t.tipo === 'ingreso' || t.tipo === 'gasto');
+      const isFuture = d > today;
+      cells.push({ dateStr, day: d.getDate(), net, hasData, income, expense, isFuture, isToday: dateStr === todayStr });
+    }
+    return cells;
+  }, [transactions]);
+
+  const heatMaxAbs = useMemo(() => Math.max(...heatmapData.map(c => Math.abs(c.net)), 1), [heatmapData]);
+
+  const getHeatColor = (cell) => {
+    if (cell.isFuture || !cell.hasData) return { bg: 'rgba(15,23,42,0.3)', color: '#334155' };
+    const intensity = Math.min(Math.abs(cell.net) / heatMaxAbs, 1);
+    if (cell.net > 0) return { bg: `rgba(16,185,129,${0.15 + intensity * 0.65})`, color: '#fff' };
+    if (cell.net < 0) return { bg: `rgba(244,63,94,${0.15 + intensity * 0.55})`, color: '#fff' };
+    return { bg: 'rgba(51,65,85,0.5)', color: '#94a3b8' };
+  };
+
+  // Export CSV
+  const handleExport = () => {
+    const headers = ['Fecha', 'Tipo', 'Categoría', 'Monto', 'Descripción'];
+    const rows = listTransactions.map(t => [t.fecha, t.tipo, t.categoria, t.tipo === 'kilometraje' ? t.monto + ' km' : '$' + t.monto.toFixed(2), t.descripcion || '']);
+    const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url;
+    a.download = `vehicular_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+  };
 
   if (!isClient) return null;
 
@@ -474,6 +541,49 @@ export default function PlanificadorVehicular() {
           </div>
         </div>
 
+        {/* HEATMAP CALENDAR */}
+        <div className="bg-slate-900/60 border border-slate-800 p-4 sm:p-5 rounded-2xl sm:rounded-3xl shadow-xl">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-amber-400" />
+              <h3 className="text-sm font-bold text-slate-100">Mapa de Actividad (Últimas 5 Semanas)</h3>
+            </div>
+            <div className="flex items-center gap-1.5 text-[9px] text-slate-500 font-semibold">
+              <span>Pérdida</span>
+              <div className="flex gap-px">
+                <div className="w-2.5 h-2.5 rounded-sm" style={{backgroundColor:'rgba(244,63,94,0.6)'}}></div>
+                <div className="w-2.5 h-2.5 rounded-sm" style={{backgroundColor:'rgba(244,63,94,0.25)'}}></div>
+                <div className="w-2.5 h-2.5 rounded-sm" style={{backgroundColor:'rgba(51,65,85,0.5)'}}></div>
+                <div className="w-2.5 h-2.5 rounded-sm" style={{backgroundColor:'rgba(16,185,129,0.3)'}}></div>
+                <div className="w-2.5 h-2.5 rounded-sm" style={{backgroundColor:'rgba(16,185,129,0.7)'}}></div>
+              </div>
+              <span>Ganancia</span>
+            </div>
+          </div>
+          <div className="max-w-md mx-auto">
+            <div className="grid grid-cols-7 gap-1 mb-1">
+              {['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map((d,i) => (
+                <div key={i} className="text-center text-[9px] text-slate-500 font-bold">{d}</div>
+              ))}
+            </div>
+            <div className="grid grid-cols-7 gap-1">
+              {heatmapData.map((cell, idx) => {
+                const colors = getHeatColor(cell);
+                return (
+                  <div
+                    key={idx}
+                    className={`aspect-square rounded-lg flex items-center justify-center text-[10px] font-bold cursor-default transition-all hover:scale-110 hover:z-10 ${cell.isToday ? 'ring-2 ring-indigo-400 ring-offset-1 ring-offset-slate-900' : ''}`}
+                    style={{ backgroundColor: colors.bg, color: colors.color }}
+                    title={cell.hasData ? `${cell.dateStr}\nIngreso: $${cell.income.toFixed(0)} | Gasto: $${cell.expense.toFixed(0)}\nNeto: $${cell.net.toFixed(0)}` : cell.dateStr}
+                  >
+                    {cell.day}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
         {/* INPUT & LIST GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
@@ -483,6 +593,23 @@ export default function PlanificadorVehicular() {
               <h2 className="text-base font-bold text-white mb-6 flex items-center gap-2">
                 <Plus className="w-4 h-4 text-indigo-400" /> Nuevo Registro Operativo
               </h2>
+
+              {/* Quick Actions */}
+              <div className="mb-4">
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1.5"><Zap className="w-3 h-3" /> Registro Rápido</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {quickActions.map((qa, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handleQuickAction(qa)}
+                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all active:scale-95 border ${qa.tipo === 'ingreso' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20' : 'bg-rose-500/10 border-rose-500/20 text-rose-400 hover:bg-rose-500/20'}`}
+                    >
+                      {qa.emoji} {qa.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               <form onSubmit={handleAddTransaction} className="space-y-4">
                 
@@ -520,6 +647,7 @@ export default function PlanificadorVehicular() {
                       <span className="text-slate-500 font-bold">{tipo === 'kilometraje' ? 'km' : '$'}</span>
                     </div>
                     <input
+                      ref={montoRef}
                       type="number"
                       step="any"
                       min="0.01"
@@ -601,9 +729,18 @@ export default function PlanificadorVehicular() {
           <main className="lg:col-span-2">
             <div className="bg-slate-900/60 border border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl flex flex-col h-[500px] sm:h-[550px]">
               <div className="p-4 sm:p-5 border-b border-slate-800/60 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <Car className="w-4 h-4 text-cyan-400" />
-                  <h3 className="text-base font-bold text-white">Libro Mayor</h3>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <Car className="w-4 h-4 text-cyan-400" />
+                    <h3 className="text-base font-bold text-white">Libro Mayor</h3>
+                  </div>
+                  <button
+                    onClick={handleExport}
+                    className="flex items-center gap-1.5 text-[10px] font-bold text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 px-2.5 py-1 rounded-lg transition-colors uppercase"
+                    title="Exportar a CSV / Excel"
+                  >
+                    <Download className="w-3 h-3" /> Excel
+                  </button>
                 </div>
 
                 <div className="flex flex-wrap gap-2 items-center">
