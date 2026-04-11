@@ -17,6 +17,10 @@ export default function PlanificadorVehicular() {
   // Dashboard Filters
   const [filterPeriod, setFilterPeriod] = useState('all'); // 'all', '7d', '30d'
 
+  // Libro Mayor Filters
+  const [listFilterCategory, setListFilterCategory] = useState('todas');
+  const [listFilterDate, setListFilterDate] = useState('');
+
   const categoriasGasto = ['gasolina', 'multa', 'limpieza', 'peaje', 'mantenimiento', 'seguro', 'comida', 'salario', 'cuota de banco', 'otros'];
   const categoriasIngreso = ['uber', 'indrive', 'didi', 'puerta a puerta', 'particular', 'otros'];
 
@@ -31,7 +35,11 @@ export default function PlanificadorVehicular() {
       .then((res) => res.json())
       .then((data) => {
         if (data.transactions && data.transactions.length > 0) {
-          const sorted = data.transactions.sort((a, b) => new Date(b.fecha) - new Date(a.fecha) || b.id - a.id);
+          const normalized = data.transactions.map(t => ({
+            ...t,
+            categoria: t.categoria === 'salario chofer' ? 'salario' : t.categoria
+          }));
+          const sorted = normalized.sort((a, b) => new Date(b.fecha) - new Date(a.fecha) || b.id - a.id);
           setTransactions(sorted);
         }
       })
@@ -85,22 +93,15 @@ export default function PlanificadorVehicular() {
     }
   };
 
-  const handleClearAll = () => {
-    if (window.confirm('⚠️ ADVERTENCIA: ¿Borrar ABSOLUTAMENTE TODOS los registros financieros?')) {
-      setTransactions([]);
-      saveToDB([]);
-    }
-  };
-
   // --- DATA AGGREGATION PARA DASHBOARD ---
   const filteredTransactions = useMemo(() => {
     if (filterPeriod === 'all') return transactions;
     const now = new Date();
     // Normalizamos para comparar con las fechas sin hora
-    now.setHours(0, 0, 0, 0); 
+    now.setHours(0, 0, 0, 0);
     const daysToSubtract = filterPeriod === '7d' ? 7 : 30;
     const pastDate = new Date(now.getTime() - (daysToSubtract * 24 * 60 * 60 * 1000));
-    
+
     return transactions.filter(t => {
       const tDate = new Date(t.fecha);
       tDate.setHours(23, 59, 59, 999);
@@ -120,7 +121,7 @@ export default function PlanificadorVehicular() {
       acc[curr.categoria] = (acc[curr.categoria] || 0) + curr.monto;
       return acc;
     }, {});
-    
+
     return Object.keys(agrupado).map(key => ({
       name: key.charAt(0).toUpperCase() + key.slice(1),
       value: agrupado[key]
@@ -146,6 +147,15 @@ export default function PlanificadorVehicular() {
 
     return Object.values(grouped).sort((a, b) => new Date(a.date) - new Date(b.date));
   }, [filteredTransactions]);
+
+  // Aplicar filtros específicos para el Libro Mayor
+  const listTransactions = useMemo(() => {
+    return filteredTransactions.filter(t => {
+      const matchCategory = listFilterCategory === 'todas' || t.categoria === listFilterCategory;
+      const matchDate = listFilterDate === '' || t.fecha === listFilterDate;
+      return matchCategory && matchDate;
+    });
+  }, [filteredTransactions, listFilterCategory, listFilterDate]);
 
   // Actualizar categoría por default al cambiar el tipo
   useEffect(() => {
@@ -192,13 +202,14 @@ export default function PlanificadorVehicular() {
   return (
     <div className="min-h-screen bg-[#040814] text-slate-100 font-sans selection:bg-indigo-500/30 p-4 sm:p-6 lg:p-8">
       <Head>
-        <title>BI Vehicular | Dashboard</title>
+        <title>BI Jetour X70| Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </Head>
 
       <div className="max-w-[1400px] mx-auto space-y-6">
-        
+
         {/* HEADER & GLOBAL FILTERS */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/50 p-6 rounded-3xl border border-slate-800/80 backdrop-blur-sm">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-800/80 backdrop-blur-sm">
           <div className="flex items-center gap-4">
             <div className="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 p-3.5 rounded-2xl ring-1 ring-indigo-500/30 shadow-lg shadow-indigo-900/20">
               <Activity className="w-7 h-7 text-indigo-400" />
@@ -216,8 +227,8 @@ export default function PlanificadorVehicular() {
           <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 p-1.5 rounded-xl shadow-inner">
             <div className="flex items-center gap-2 px-3 py-2">
               <Filter className="w-4 h-4 text-slate-400" />
-              <select 
-                value={filterPeriod} 
+              <select
+                value={filterPeriod}
                 onChange={e => setFilterPeriod(e.target.value)}
                 className="bg-transparent text-sm font-bold text-slate-200 focus:outline-none appearance-none pr-6 cursor-pointer"
                 style={{ backgroundImage: 'linear-gradient(45deg, transparent 50%, #94a3b8 50%), linear-gradient(135deg, #94a3b8 50%, transparent 50%)', backgroundPosition: 'calc(100% - 4px) calc(1em + 2px), calc(100% - 0px) calc(1em + 2px)', backgroundSize: '4px 4px, 4px 4px', backgroundRepeat: 'no-repeat' }}
@@ -284,7 +295,7 @@ export default function PlanificadorVehicular() {
 
         {/* ANALYTICS CHARTS */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
+
           {/* Main Trend Chart */}
           <div className="lg:col-span-2 bg-slate-900/60 border border-slate-800 p-6 rounded-3xl shadow-xl">
             <div className="flex items-center gap-2 mb-6">
@@ -297,19 +308,19 @@ export default function PlanificadorVehicular() {
                   <AreaChart data={trendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id="colorIngreso" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                       </linearGradient>
                       <linearGradient id="colorGasto" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#f43f5e" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#f43f5e" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                    <XAxis 
-                      dataKey="date" 
-                      stroke="#475569" 
-                      fontSize={11} 
+                    <XAxis
+                      dataKey="date"
+                      stroke="#475569"
+                      fontSize={11}
                       tickLine={false}
                       axisLine={false}
                       tickFormatter={(str) => {
@@ -336,40 +347,40 @@ export default function PlanificadorVehicular() {
               <PieChartIcon className="w-5 h-5 text-purple-400" />
               <h3 className="text-lg font-bold text-slate-100">Distribución de Gastos</h3>
             </div>
-            
+
             <div className="flex-1 min-h-[250px] relative">
-               {gastosPorRubro.length > 0 ? (
-                 <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={gastosPorRubro}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={90}
-                        paddingAngle={5}
-                        dataKey="value"
-                        stroke="none"
-                      >
-                        {gastosPorRubro.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <RechartsTooltip content={<CustomTooltipPie />} />
-                    </PieChart>
-                 </ResponsiveContainer>
-               ) : (
-                 <div className="absolute inset-0 flex items-center justify-center text-slate-500 font-medium">Sin datos de gastos</div>
-               )}
-               {/* Center Metric Text */}
-               {gastosPorRubro.length > 0 && (
-                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <span className="text-xs text-slate-400 font-bold uppercase">Total</span>
-                    <span className="text-lg font-black text-white">${totalGastos.toFixed(0)}</span>
-                 </div>
-               )}
+              {gastosPorRubro.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={gastosPorRubro}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={90}
+                      paddingAngle={5}
+                      dataKey="value"
+                      stroke="none"
+                    >
+                      {gastosPorRubro.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip content={<CustomTooltipPie />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-slate-500 font-medium">Sin datos de gastos</div>
+              )}
+              {/* Center Metric Text */}
+              {gastosPorRubro.length > 0 && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <span className="text-xs text-slate-400 font-bold uppercase">Total</span>
+                  <span className="text-lg font-black text-white">${totalGastos.toFixed(0)}</span>
+                </div>
+              )}
             </div>
-            
+
             {/* Custom Mini Legend */}
             {gastosPorRubro.length > 0 && (
               <div className="mt-2 grid grid-cols-2 gap-2 max-h-[100px] overflow-y-auto hide-scrollbar">
@@ -386,16 +397,16 @@ export default function PlanificadorVehicular() {
 
         {/* INPUT & LIST GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
+
           {/* Form */}
           <aside className="lg:col-span-1">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 shadow-xl sticky top-6">
+            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl sticky top-6">
               <h2 className="text-base font-bold text-white mb-6 flex items-center gap-2">
                 <Plus className="w-4 h-4 text-indigo-400" /> Nuevo Registro Operativo
               </h2>
 
               <form onSubmit={handleAddTransaction} className="space-y-4">
-                
+
                 <div className="p-1 bg-slate-950/80 rounded-xl flex gap-1 border border-slate-800/80 shadow-inner">
                   <button
                     type="button"
@@ -421,7 +432,7 @@ export default function PlanificadorVehicular() {
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                       <span className="text-slate-500 font-bold">$</span>
                     </div>
-                    <input 
+                    <input
                       type="number"
                       step="0.01"
                       min="0"
@@ -439,7 +450,7 @@ export default function PlanificadorVehicular() {
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
                       <Tag className="w-3 h-3" /> Categoría
                     </label>
-                    <select 
+                    <select
                       value={categoria}
                       onChange={e => setCategoria(e.target.value)}
                       className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-xl py-2.5 px-3 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 appearance-none capitalize text-xs"
@@ -453,7 +464,7 @@ export default function PlanificadorVehicular() {
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
                       <Calendar className="w-3 h-3" /> Fecha
                     </label>
-                    <input 
+                    <input
                       type="date"
                       required
                       value={fecha}
@@ -467,7 +478,7 @@ export default function PlanificadorVehicular() {
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
                     <FileText className="w-3 h-3" /> Detalle
                   </label>
-                  <input 
+                  <input
                     type="text"
                     value={descripcion}
                     onChange={e => setDescripcion(e.target.value)}
@@ -476,7 +487,7 @@ export default function PlanificadorVehicular() {
                   />
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   className={`w-full py-3 mt-1 rounded-xl font-bold flex items-center justify-center gap-2 transition-transform active:scale-[0.98] text-sm shadow-lg
                     ${tipo === 'ingreso' ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/30' : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-900/30'}`}
@@ -485,7 +496,7 @@ export default function PlanificadorVehicular() {
                 </button>
               </form>
             </div>
-            
+
             {/* Análisis Breve */}
             {totalGastos > totalIngresos * 0.7 && totalIngresos > 0 && (
               <div className="mt-4 bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl flex items-start gap-3">
@@ -500,24 +511,46 @@ export default function PlanificadorVehicular() {
 
           {/* Transaction List */}
           <main className="lg:col-span-2">
-            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl shadow-xl flex flex-col h-[550px]">
-              <div className="p-5 border-b border-slate-800/60 flex items-center justify-between">
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                   <Car className="w-4 h-4 text-cyan-400" /> Libro Mayor de Movimientos
-                </h3>
-                <div className="flex gap-2 items-center">
-                  <span className="text-xs text-slate-500 font-semibold">{filteredTransactions.length} regs.</span>
-                  <button
-                    onClick={handleClearAll}
-                    className="text-[10px] font-bold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500/80 px-2 py-1.5 rounded-lg transition-colors border border-rose-500/20 flex items-center gap-1.5 uppercase"
+            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl flex flex-col h-[500px] sm:h-[550px]">
+              <div className="p-4 sm:p-5 border-b border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <Car className="w-4 h-4 text-cyan-400" />
+                  <h3 className="text-base font-bold text-white">Libro Mayor</h3>
+                </div>
+
+                <div className="flex flex-wrap gap-2 items-center">
+                  {/* Select Categoría */}
+                  <select
+                    value={listFilterCategory}
+                    onChange={e => setListFilterCategory(e.target.value)}
+                    className="bg-slate-950/50 border border-slate-800 text-slate-300 rounded-lg py-1.5 px-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-xs capitalize"
                   >
-                    <Trash2 className="w-3 h-3" /> Limpiar BD
-                  </button>
+                    <option value="todas">Todas las categorías</option>
+                    {[...categoriasGasto, ...categoriasIngreso].map(c => (
+                      <option key={c} value={c} className="capitalize">{c}</option>
+                    ))}
+                  </select>
+
+                  {/* Date Input */}
+                  <div className="flex items-center gap-1 bg-slate-950/50 border border-slate-800 rounded-lg px-2 text-xs">
+                    <span className="text-slate-500">Día:</span>
+                    <input
+                      type="date"
+                      value={listFilterDate}
+                      onChange={e => setListFilterDate(e.target.value)}
+                      className="bg-transparent text-slate-300 py-1.5 focus:outline-none [color-scheme:dark]"
+                    />
+                    {listFilterDate && (
+                      <button onClick={() => setListFilterDate('')} className="text-rose-400 font-bold ml-1 hover:text-rose-300">&times;</button>
+                    )}
+                  </div>
+
+                  <span className="text-xs text-slate-500 font-semibold ml-2">{listTransactions.length} regs.</span>
                 </div>
               </div>
 
               <div className="flex-1 overflow-y-auto p-2 hide-scrollbar">
-                {filteredTransactions.length === 0 ? (
+                {listTransactions.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-slate-500 p-8 text-center space-y-3">
                     <div className="p-4 bg-slate-950 rounded-full border border-slate-800">
                       <FileText className="w-8 h-8 text-slate-600" />
@@ -529,14 +562,14 @@ export default function PlanificadorVehicular() {
                   </div>
                 ) : (
                   <div className="space-y-2 p-2">
-                    {filteredTransactions.map((tx) => (
+                    {listTransactions.map((tx) => (
                       <div key={tx.id} className="flex items-center justify-between p-3.5 bg-slate-950/40 border border-slate-800/50 rounded-2xl hover:bg-slate-800/80 transition-colors group">
-                        
+
                         <div className="flex items-center gap-3.5">
                           <div className={`p-2.5 rounded-xl border ${tx.tipo === 'ingreso' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'}`}>
                             {tx.tipo === 'ingreso' ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                           </div>
-                          
+
                           <div>
                             <div className="flex items-center gap-2 mb-0.5">
                               <span className="font-bold text-slate-200 capitalize text-sm">{tx.categoria}</span>
@@ -554,15 +587,15 @@ export default function PlanificadorVehicular() {
                           <span className={`font-black text-sm md:text-base ${tx.tipo === 'ingreso' ? 'text-emerald-400' : 'text-rose-400'}`}>
                             {tx.tipo === 'ingreso' ? '+' : '-'}${tx.monto.toFixed(2)}
                           </span>
-                          <button 
+                          <button
                             onClick={() => handleDelete(tx.id)}
-                            className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-slate-900 rounded-lg opacity-0 group-hover:opacity-100 transition-all border border-transparent hover:border-slate-800"
+                            className="p-1.5 text-slate-500 hover:text-rose-400 active:bg-slate-800 hover:bg-slate-900 rounded-lg lg:opacity-0 lg:group-hover:opacity-100 transition-all border border-transparent hover:border-slate-800 shrink-0"
                             title="Eliminar Registro"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-4 h-4 md:w-3.5 md:h-3.5" />
                           </button>
                         </div>
-                        
+
                       </div>
                     ))}
                   </div>
@@ -573,8 +606,9 @@ export default function PlanificadorVehicular() {
 
         </div>
       </div>
-      
-      <style dangerouslySetInnerHTML={{__html: `
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; }
