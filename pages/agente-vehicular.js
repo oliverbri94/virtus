@@ -120,8 +120,10 @@ export default function PlanificadorVehicular() {
   const kmsPersonal = filteredTransactions.filter(t => t.tipo === 'kilometraje' && t.categoria === 'personal').reduce((acc, t) => acc + t.monto, 0);
   const totalKms = kmsTrabajo + kmsPersonal;
   
+  const gastoGasolina = filteredTransactions.filter(t => t.tipo === 'gasto' && t.categoria === 'gasolina').reduce((acc, t) => acc + t.monto, 0);
   const ingresoPor100Km = kmsTrabajo > 0 ? ((totalIngresos / kmsTrabajo) * 100).toFixed(2) : 0;
-  const gastoPor100Km = totalKms > 0 ? ((totalGastos / totalKms) * 100).toFixed(2) : 0;
+  const gasolinaPor100Km = totalKms > 0 ? ((gastoGasolina / totalKms) * 100).toFixed(2) : 0;
+  const costoTotalPor100Km = totalKms > 0 ? ((totalGastos / totalKms) * 100).toFixed(2) : 0;
 
   // Para Pie Chart (Distribución de Gastos)
   const gastosPorRubro = useMemo(() => {
@@ -357,12 +359,13 @@ export default function PlanificadorVehicular() {
                  <AlertTriangle className="w-5 h-5" />
                </div>
                <div>
-                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Gasto / 100 KM</p>
-                 <p className="flex items-baseline gap-1 text-xl font-bold text-white relative group">
-                    ${gastoPor100Km}
-                    <span className="text-[8px] absolute -bottom-3 left-0 text-slate-500 w-max opacity-0 group-hover:opacity-100 transition-opacity">Divide Mantenimientos sobre KMs Totales</span>
-                 </p>
+                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Gasolina / 100 KM</p>
+                 <p className="text-xl font-bold text-white">${gasolinaPor100Km}</p>
                </div>
+             </div>
+             <div className="text-right">
+               <p className="text-[9px] font-bold text-slate-500 uppercase">Costo Total</p>
+               <p className="text-sm font-bold text-slate-400">${costoTotalPor100Km}<span className="text-[9px] text-slate-600">/100km</span></p>
              </div>
           </div>
         </div>
@@ -518,9 +521,10 @@ export default function PlanificadorVehicular() {
                     </div>
                     <input
                       type="number"
-                      step={tipo === 'kilometraje' ? "1" : "0.01"}
-                      min="0"
+                      step="any"
+                      min="0.01"
                       required
+                      inputMode="decimal"
                       value={monto}
                       onChange={e => setMonto(e.target.value)}
                       placeholder={tipo === 'kilometraje' ? "100" : "0.00"}
