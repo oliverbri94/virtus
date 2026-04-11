@@ -18,6 +18,7 @@ export default function PlanificadorVehicular() {
   const [filterPeriod, setFilterPeriod] = useState('all'); // 'all', '7d', '30d'
 
   // Libro Mayor Filters
+  const [listFilterType, setListFilterType] = useState('todos'); // 'todos', 'ingreso', 'gasto'
   const [listFilterCategory, setListFilterCategory] = useState('todas');
   const [listFilterDate, setListFilterDate] = useState('');
 
@@ -151,11 +152,17 @@ export default function PlanificadorVehicular() {
   // Aplicar filtros específicos para el Libro Mayor
   const listTransactions = useMemo(() => {
     return filteredTransactions.filter(t => {
+      const matchType = listFilterType === 'todos' || t.tipo === listFilterType;
       const matchCategory = listFilterCategory === 'todas' || t.categoria === listFilterCategory;
       const matchDate = listFilterDate === '' || t.fecha === listFilterDate;
-      return matchCategory && matchDate;
+      return matchType && matchCategory && matchDate;
     });
-  }, [filteredTransactions, listFilterCategory, listFilterDate]);
+  }, [filteredTransactions, listFilterType, listFilterCategory, listFilterDate]);
+
+  // Limpiar categoría al cambiar tipo de filtro
+  useEffect(() => {
+    setListFilterCategory('todas');
+  }, [listFilterType]);
 
   // Actualizar categoría por default al cambiar el tipo
   useEffect(() => {
@@ -519,6 +526,17 @@ export default function PlanificadorVehicular() {
                 </div>
 
                 <div className="flex flex-wrap gap-2 items-center">
+                  {/* Select Tipo */}
+                  <select
+                    value={listFilterType}
+                    onChange={e => setListFilterType(e.target.value)}
+                    className="bg-slate-950/50 border border-slate-800 text-slate-300 rounded-lg py-1.5 px-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-xs font-semibold"
+                  >
+                    <option value="todos">Todos los Tipos</option>
+                    <option value="ingreso">🟢 Ingresos</option>
+                    <option value="gasto">🔴 Gastos</option>
+                  </select>
+
                   {/* Select Categoría */}
                   <select
                     value={listFilterCategory}
@@ -526,22 +544,28 @@ export default function PlanificadorVehicular() {
                     className="bg-slate-950/50 border border-slate-800 text-slate-300 rounded-lg py-1.5 px-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-xs capitalize"
                   >
                     <option value="todas">Todas las categorías</option>
-                    {[...categoriasGasto, ...categoriasIngreso].map(c => (
-                      <option key={c} value={c} className="capitalize">{c}</option>
-                    ))}
+                    {listFilterType === 'gasto' && categoriasGasto.map(c => <option key={c} value={c} className="capitalize">{c}</option>)}
+                    {listFilterType === 'ingreso' && categoriasIngreso.map(c => <option key={c} value={c} className="capitalize">{c}</option>)}
+                    {listFilterType === 'todos' && [...categoriasGasto, ...categoriasIngreso].map(c => <option key={c} value={c} className="capitalize">{c}</option>)}
                   </select>
 
                   {/* Date Input */}
-                  <div className="flex items-center gap-1 bg-slate-950/50 border border-slate-800 rounded-lg px-2 text-xs">
-                    <span className="text-slate-500">Día:</span>
+                  <div className="flex items-center gap-1 bg-slate-950/50 border border-slate-800 rounded-lg text-xs relative overflow-hidden group hover:border-slate-700 transition-colors">
+                    <span className="text-slate-500 absolute left-2 pointer-events-none font-semibold">Día:</span>
                     <input
                       type="date"
                       value={listFilterDate}
                       onChange={e => setListFilterDate(e.target.value)}
-                      className="bg-transparent text-slate-300 py-1.5 focus:outline-none [color-scheme:dark]"
+                      onClick={(e) => { if (e.target.showPicker) e.target.showPicker(); }}
+                      className="bg-transparent text-slate-300 py-1.5 pl-8 pr-6 focus:outline-none [color-scheme:dark] cursor-pointer w-[125px] sm:w-auto"
                     />
                     {listFilterDate && (
-                      <button onClick={() => setListFilterDate('')} className="text-rose-400 font-bold ml-1 hover:text-rose-300">&times;</button>
+                      <button 
+                        onClick={() => setListFilterDate('')} 
+                        className="absolute right-1 text-rose-400 font-bold hover:text-rose-300 bg-slate-950/80 rounded px-1 flex items-center justify-center p-0.5"
+                      >
+                        &times;
+                      </button>
                     )}
                   </div>
 
